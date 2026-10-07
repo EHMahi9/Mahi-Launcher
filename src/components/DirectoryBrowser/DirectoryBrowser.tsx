@@ -1215,6 +1215,15 @@ export const DirectoryBrowser: React.FC<DirectoryBrowserProps> = ({
               <button
                 type="button"
                 className="mahi-error-btn primary"
+                onClick={onRefresh}
+                title="Retry loading this directory"
+              >
+                <RefreshCw size={13} style={{ marginRight: '6px' }} />
+                Retry
+              </button>
+              <button
+                type="button"
+                className="mahi-error-btn"
                 onClick={onGoUp}
               >
                 Go to Parent Directory

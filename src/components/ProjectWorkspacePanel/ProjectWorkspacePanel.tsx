@@ -455,11 +455,17 @@ export const ProjectWorkspacePanel: React.FC<ProjectWorkspacePanelProps> = ({
       <div className="mahi-workspace-panel error-state">
         <AlertCircle size={36} className="error-icon" />
         <h2>Unable to load project workspace</h2>
-        <p>{error || 'Project metadata could not be resolved.'}</p>
-        <button type="button" className="mahi-ws-btn secondary" onClick={onBack}>
-          <ArrowLeft size={14} />
-          <span>Return</span>
-        </button>
+        <p>{error || 'Project metadata could not be resolved from this location.'}</p>
+        <div style={{ display: 'flex', gap: '10px', marginTop: '16px' }}>
+          <button type="button" className="mahi-ws-btn primary" onClick={loadProject}>
+            <RefreshCw size={14} />
+            <span>Retry</span>
+          </button>
+          <button type="button" className="mahi-ws-btn secondary" onClick={onBack}>
+            <ArrowLeft size={14} />
+            <span>Return</span>
+          </button>
+        </div>
       </div>
     );
   }

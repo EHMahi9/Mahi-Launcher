@@ -103,6 +103,7 @@ export const StorageIntelligenceView: React.FC<StorageIntelligenceViewProps> = (
   const [cleanupPreview, setCleanupPreview] = useState<CleanupPreview | null>(null);
   const [cleanupLoading, setCleanupLoading] = useState<boolean>(false);
   const [cleanupResult, setCleanupResult] = useState<CleanupExecutionResult | null>(null);
+  const [cleanupError, setCleanupError] = useState<string | null>(null);
   const [cleanupHistory, setCleanupHistory] = useState<CleanupHistoryEntry[]>([]);
   const [historyLoading, setHistoryLoading] = useState<boolean>(false);
 
@@ -406,12 +407,14 @@ export const StorageIntelligenceView: React.FC<StorageIntelligenceViewProps> = (
   const handleOpenPreview = async () => {
     if (selectedPaths.size === 0) return;
     setCleanupLoading(true);
+    setCleanupError(null);
     try {
       const preview = await getCleanupPreview(Array.from(selectedPaths));
       setCleanupPreview(preview);
       setPreviewModalOpen(true);
     } catch (err: any) {
       console.error('Failed to generate preview:', err);
+      setCleanupError(err?.message || String(err) || 'Failed to generate cleanup preview');
     } finally {
       setCleanupLoading(false);
     }
@@ -421,6 +424,7 @@ export const StorageIntelligenceView: React.FC<StorageIntelligenceViewProps> = (
   const handleExecuteCleanup = async () => {
     if (!cleanupPreview || cleanupPreview.targets.length === 0) return;
     setCleanupLoading(true);
+    setCleanupError(null);
     try {
       const pathsToClean = cleanupPreview.targets.map((t) => t.path);
       const res = await executeSafeCleanup(pathsToClean);
@@ -432,6 +436,7 @@ export const StorageIntelligenceView: React.FC<StorageIntelligenceViewProps> = (
       loadHistory();
     } catch (err: any) {
       console.error('Cleanup execution failed:', err);
+      setCleanupError(err?.message || String(err) || 'Cleanup execution failed');
     } finally {
       setCleanupLoading(false);
     }
@@ -550,6 +555,26 @@ export const StorageIntelligenceView: React.FC<StorageIntelligenceViewProps> = (
             type="button"
             className="result-dismiss-btn"
             onClick={() => setCleanupResult(null)}
+          >
+            <X size={14} />
+          </button>
+        </div>
+      )}
+
+      {/* Cleanup Error Banner */}
+      {cleanupError && (
+        <div className="si-result-banner error" style={{ borderColor: 'rgba(239, 68, 68, 0.4)', background: 'rgba(239, 68, 68, 0.08)' }}>
+          <div className="result-banner-left">
+            <AlertTriangle size={20} className="text-amber" />
+            <div>
+              <h4 className="result-title" style={{ color: '#ef4444' }}>CLEANUP ISSUE</h4>
+              <p className="result-details">{cleanupError}</p>
+            </div>
+          </div>
+          <button
+            type="button"
+            className="result-dismiss-btn"
+            onClick={() => setCleanupError(null)}
           >
             <X size={14} />
           </button>

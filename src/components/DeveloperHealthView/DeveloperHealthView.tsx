@@ -92,6 +92,7 @@ export const DeveloperHealthView: React.FC<DeveloperHealthViewProps> = ({
 }) => {
   const [report, setReport] = useState<DeveloperEnvironmentReport | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [auditError, setAuditError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<TabType>(initialTab);
   const [copiedText, setCopiedText] = useState<string | null>(null);
 
@@ -176,6 +177,7 @@ export const DeveloperHealthView: React.FC<DeveloperHealthViewProps> = ({
 
   const fetchAuditReport = useCallback(async () => {
     setLoading(true);
+    setAuditError(null);
     try {
       const [auditData, availableRepairs, history, tcReport, tcInstalls] = await Promise.all([
         runDeveloperEnvironmentAudit([inspectProjectPath]),
@@ -190,8 +192,9 @@ export const DeveloperHealthView: React.FC<DeveloperHealthViewProps> = ({
       setToolchainReport(tcReport);
       setAllToolchainInstalls(tcInstalls);
       await fetchProfileForProject(inspectProjectPath);
-    } catch (err) {
+    } catch (err: any) {
       console.error('Failed to run developer environment audit or fetch repairs:', err);
+      setAuditError(err?.message || String(err) || 'Failed to complete environment audit');
     } finally {
       setLoading(false);
     }
@@ -633,6 +636,35 @@ export const DeveloperHealthView: React.FC<DeveloperHealthViewProps> = ({
           <strong>Strict Safety Protocol:</strong> Developer Health operates exclusively in read-only mode. MAHI inspects configurations and manifests without modifying PATH, deleting files, or executing arbitrary commands.
         </span>
       </div>
+
+      {/* Audit Error State */}
+      {!loading && auditError && !report && (
+        <div style={{
+          padding: '40px 24px',
+          textAlign: 'center',
+          background: 'rgba(239, 68, 68, 0.08)',
+          border: '1px solid rgba(239, 68, 68, 0.25)',
+          borderRadius: '10px',
+          margin: '20px 0',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '12px'
+        }}>
+          <AlertTriangle size={32} style={{ color: '#ef4444' }} />
+          <h2 style={{ fontSize: '18px', color: '#f8fafc', margin: 0 }}>Environment Audit Failed</h2>
+          <p style={{ color: '#94a3b8', maxWidth: '480px', margin: 0, fontSize: '13px' }}>{auditError}</p>
+          <button
+            type="button"
+            className="mahi-health-btn"
+            onClick={fetchAuditReport}
+            style={{ marginTop: '8px' }}
+          >
+            <RefreshCw size={14} />
+            <span>Run Audit Again</span>
+          </button>
+        </div>
+      )}
 
       {/* Health Overview & Score Grid */}
       {report && (

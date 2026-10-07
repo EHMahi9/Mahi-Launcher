@@ -52,6 +52,7 @@ export const WorkspaceProcessView: React.FC<WorkspaceProcessViewProps> = ({
 
   const terminalBodyRef = useRef<HTMLDivElement>(null);
   const isPollingRef = useRef(false);
+  const pollFailuresRef = useRef(0);
 
   // Poll status and delta output
   const pollProcess = useCallback(async () => {
@@ -61,6 +62,7 @@ export const WorkspaceProcessView: React.FC<WorkspaceProcessViewProps> = ({
       // 1. Fetch live status
       const updatedStatus = await getWorkspaceProcessStatus(sessionId);
       setStatus(updatedStatus);
+      pollFailuresRef.current = 0;
 
       // 2. Fetch incremental output delta
       const outputDelta = await getWorkspaceProcessOutput(sessionId, nextLineNumber);
@@ -75,7 +77,21 @@ export const WorkspaceProcessView: React.FC<WorkspaceProcessViewProps> = ({
       }
       setNextLineNumber(outputDelta.nextLineNumber);
     } catch (err) {
+      pollFailuresRef.current += 1;
       console.warn('Process poll error (safe):', err);
+      if (pollFailuresRef.current >= 4) {
+        setStatus((prev) =>
+          prev && (prev.state === 'RUNNING' || prev.state === 'STARTING' || prev.state === 'STOPPING')
+            ? {
+                ...prev,
+                state: 'STOPPED',
+                exitCode: prev.exitCode ?? -1,
+                finishedAt: Math.floor(Date.now() / 1000),
+              }
+            : prev
+        );
+        setStopError('Process session is no longer reachable on workstation.');
+      }
     } finally {
       isPollingRef.current = false;
     }

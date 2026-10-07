@@ -466,6 +466,10 @@ function App() {
       loadStorage(false);
     } catch (err) {
       console.error('Failed to load initial data:', err);
+      setToast({
+        type: 'warning',
+        message: 'Could not synchronize some workspace sources. Click refresh to retry.',
+      });
     } finally {
       setLoading(false);
     }
@@ -1137,24 +1141,48 @@ function App() {
               onOpenWorkspace={(p) => handleOpenWorkspace(p.path)}
               onTogglePin={(p) => handleTogglePin(p.path, p.name)}
             />
-          ) : activeNav === 'workspace' && workspaceProjectPath ? (
-            <Suspense fallback={
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '300px', gap: '12px', color: '#8fa0bc' }}>
-                <RefreshCw size={24} className="mahi-spin" />
-                <span>Loading Workspace Panel...</span>
+          ) : activeNav === 'workspace' ? (
+            workspaceProjectPath ? (
+              <Suspense fallback={
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '300px', gap: '12px', color: '#8fa0bc' }}>
+                  <RefreshCw size={24} className="mahi-spin" />
+                  <span>Loading Workspace Panel...</span>
+                </div>
+              }>
+                <ProjectWorkspacePanel
+                  projectPath={workspaceProjectPath}
+                  onBack={() => {
+                    setActiveNav(previousNav || 'home');
+                  }}
+                  onOpenInVsCode={(path) => handleOpenInVsCode(path)}
+                  onOpenInTerminal={(path) => handleOpenInTerminal(path)}
+                  onOpenInExplorer={(path) => handleOpenInExplorer(path)}
+                  onNavigateToExplorer={(path) => handleTabNavigate(path)}
+                />
+              </Suspense>
+            ) : (
+              <div style={{ padding: '64px 24px', textAlign: 'center', color: '#94a3b8', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '14px' }}>
+                <FolderGit2 size={40} style={{ color: '#64748b' }} />
+                <h2 style={{ fontSize: '18px', color: '#f1f5f9', margin: 0 }}>No Project Selected</h2>
+                <p style={{ maxWidth: '420px', fontSize: '13px', margin: 0 }}>Select a developer project from Home or Discovered Projects to open its workspace command center.</p>
+                <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
+                  <button
+                    type="button"
+                    onClick={() => setActiveNav('home')}
+                    style={{ padding: '8px 16px', background: '#2563eb', color: '#fff', borderRadius: '6px', border: 'none', cursor: 'pointer', fontWeight: 500 }}
+                  >
+                    Go to Home
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setActiveNav('projects')}
+                    style={{ padding: '8px 16px', background: 'rgba(255,255,255,0.08)', color: '#cbd5e1', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.15)', cursor: 'pointer' }}
+                  >
+                    Browse Projects
+                  </button>
+                </div>
               </div>
-            }>
-              <ProjectWorkspacePanel
-                projectPath={workspaceProjectPath}
-                onBack={() => {
-                  setActiveNav(previousNav || 'home');
-                }}
-                onOpenInVsCode={(path) => handleOpenInVsCode(path)}
-                onOpenInTerminal={(path) => handleOpenInTerminal(path)}
-                onOpenInExplorer={(path) => handleOpenInExplorer(path)}
-                onNavigateToExplorer={(path) => handleTabNavigate(path)}
-              />
-            </Suspense>
+            )
           ) : activeNav === 'command-center' ? (
             <CommandCenter
               projects={projects}
