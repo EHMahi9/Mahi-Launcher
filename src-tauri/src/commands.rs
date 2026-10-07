@@ -667,16 +667,18 @@ impl ProcessManager {
             guard.status = ProcessStatus::Stopped;
             guard.output_lines.push("[mahi] Process stopped by user.".to_string());
             if let Some(pid) = pid_opt {
-                #[cfg(target_os = "windows")]
-                {
-                    let mut kill_cmd = Command::new("taskkill");
-                    kill_cmd.args(["/F", "/T", "/PID", &pid.to_string()]);
-                    kill_cmd.creation_flags(CREATE_NO_WINDOW);
-                    let _ = kill_cmd.output();
-                }
-                #[cfg(not(target_os = "windows"))]
-                {
-                    let _ = Command::new("kill").args(["-9", &pid.to_string()]).output();
+                if pid > 0 {
+                    #[cfg(target_os = "windows")]
+                    {
+                        let mut kill_cmd = Command::new("taskkill");
+                        kill_cmd.args(["/F", "/T", "/PID", &pid.to_string()]);
+                        kill_cmd.creation_flags(CREATE_NO_WINDOW);
+                        let _ = kill_cmd.output();
+                    }
+                    #[cfg(not(target_os = "windows"))]
+                    {
+                        let _ = Command::new("kill").args(["-9", &pid.to_string()]).output();
+                    }
                 }
             }
         }
@@ -1349,6 +1351,9 @@ pub fn set_scan_roots(
         }
         let p = Path::new(&clean);
         if !p.exists() || !p.is_dir() {
+            continue;
+        }
+        if validate_path_security(p, false).is_err() {
             continue;
         }
         let norm = normalize_path_str(&clean);
@@ -2599,12 +2604,133 @@ fn get_unique_name(dest_dir: &Path, original_name: &str, is_dir: bool) -> PathBu
     }
 }
 
+/// Security validator for filenames to prevent path traversal, reserved device names, and invalid characters.
+pub fn validate_filename(name: &str) -> Result<(), String> {
+    let trimmed = name.trim();
+    if trimmed.is_empty() {
+        return Err("Filename cannot be empty.".to_string());
+    }
+
+    if trimmed == "." || trimmed == ".." {
+        return Err("Filename cannot be '.' or '..'.".to_string());
+    }
+
+    if trimmed.ends_with('.') || trimmed.ends_with(' ') {
+        return Err("A filename cannot end with a period or space on Windows.".to_string());
+    }
+
+    let illegal_chars = ['\\', '/', ':', '*', '?', '"', '<', '>', '|'];
+    if trimmed.chars().any(|c| (c as u32) < 32 || illegal_chars.contains(&c)) {
+        return Err("A filename cannot contain control characters or any of the following characters: \\ / : * ? \" < > |".to_string());
+    }
+
+    // Windows reserved DOS device names (CON, PRN, AUX, NUL, COM1-COM9, LPT1-LPT9)
+    let p = Path::new(trimmed);
+    let stem = p.file_stem().and_then(|s| s.to_str()).unwrap_or(trimmed).to_uppercase();
+    const RESERVED_NAMES: &[&str] = &[
+        "CON", "PRN", "AUX", "NUL",
+        "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
+        "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9",
+    ];
+
+    if RESERVED_NAMES.contains(&stem.as_str()) {
+        return Err(format!("'{}' is a reserved device name in Windows.", stem));
+    }
+
+    Ok(())
+}
+
+/// Security validator for filesystem operations enforcing path boundaries, system roots, and sensitive files.
+pub fn validate_path_security(path: &Path, is_destructive: bool) -> Result<(), String> {
+    let path_str = path.to_string_lossy();
+    let lower_raw = path_str.to_lowercase().replace('/', "\\");
+
+    if path.parent().is_none() || lower_raw.is_empty() || lower_raw == "\\" || lower_raw == "/" {
+        return Err(format!("Blocked: Cannot perform operation on a drive root directory: '{}'", path_str));
+    }
+
+    if lower_raw.ends_with(":\\") || lower_raw.ends_with(":") || (lower_raw.len() <= 3 && lower_raw.contains(':')) {
+        return Err(format!("Blocked: Cannot perform operation on a drive root directory: '{}'", path_str));
+    }
+
+    // Use canonical path if available to resolve relative segments or aliases
+    let test_str = if let Ok(canonical) = fs::canonicalize(path) {
+        let s = canonical.to_string_lossy().to_string();
+        s.strip_prefix(r"\\?\").map(|x| x.to_string()).unwrap_or(s)
+    } else {
+        path_str.to_string()
+    };
+    let lower = test_str.to_lowercase().replace('/', "\\");
+
+    let forbidden_prefixes = [
+        "c:\\windows",
+        "c:\\program files",
+        "c:\\program files (x86)",
+        "c:\\programdata\\microsoft",
+        "c:\\users\\default",
+        "c:\\users\\public",
+        "c:\\system volume information",
+        "c:\\$recycle.bin",
+    ];
+
+    for forbidden in forbidden_prefixes {
+        if lower == forbidden || lower.starts_with(&format!("{}\\", forbidden))
+            || lower_raw == forbidden || lower_raw.starts_with(&format!("{}\\", forbidden)) {
+            return Err(format!("Blocked: Path '{}' is inside a protected Windows system or program directory.", path_str));
+        }
+    }
+
+    if let Ok(user_profile) = std::env::var("USERPROFILE") {
+        let up_lower = user_profile.to_lowercase().replace('/', "\\");
+        if !up_lower.is_empty() {
+            if lower == up_lower || lower_raw == up_lower {
+                return Err("Blocked: Operations on the user profile root directory are forbidden.".to_string());
+            }
+            if is_destructive {
+                let protected_user_dirs = [
+                    format!("{}\\desktop", up_lower),
+                    format!("{}\\documents", up_lower),
+                    format!("{}\\downloads", up_lower),
+                    format!("{}\\pictures", up_lower),
+                    format!("{}\\videos", up_lower),
+                    format!("{}\\music", up_lower),
+                ];
+                for pud in protected_user_dirs {
+                    if lower == pud || lower_raw == pud {
+                        return Err(format!("Blocked: Direct deletion of personal profile library root '{}' is forbidden.", path_str));
+                    }
+                }
+            }
+        }
+    }
+
+    if is_destructive {
+        if let Ok(meta) = fs::symlink_metadata(path) {
+            if meta.file_type().is_symlink() {
+                return Err("Blocked: Direct deletion or mutation of symbolic links or reparse points is blocked.".to_string());
+            }
+        }
+
+        if lower == ".git" || lower.ends_with("\\.git") || lower.contains("\\.git\\")
+            || lower_raw == ".git" || lower_raw.ends_with("\\.git") || lower_raw.contains("\\.git\\") {
+            return Err("Blocked: Git repository directory is protected from deletion or rename.".to_string());
+        }
+
+        if crate::storage_engine::is_sensitive_path(&path_str) || crate::storage_engine::is_sensitive_path(&test_str) {
+            return Err(format!("Blocked: Target '{}' contains protected credentials or sensitive environment data (.env, SSH keys, credentials).", path_str));
+        }
+    }
+
+    Ok(())
+}
+
 #[tauri::command]
 pub fn copy_items(sources: Vec<String>, destination_dir: String) -> Result<FileOperationResult, String> {
     let dest_dir_path = Path::new(&destination_dir);
     if !dest_dir_path.exists() || !dest_dir_path.is_dir() {
         return Err(format!("Destination folder does not exist: {}", destination_dir));
     }
+    validate_path_security(dest_dir_path, false)?;
 
     let mut affected_paths = Vec::new();
     let mut errors = Vec::new();
@@ -2616,6 +2742,12 @@ pub fn copy_items(sources: Vec<String>, destination_dir: String) -> Result<FileO
         if !src.exists() {
             failure_count += 1;
             errors.push(format!("Source does not exist: {}", src_str));
+            continue;
+        }
+
+        if let Err(e) = validate_path_security(src, false) {
+            failure_count += 1;
+            errors.push(e);
             continue;
         }
 
@@ -2672,6 +2804,7 @@ pub fn move_items(sources: Vec<String>, destination_dir: String) -> Result<FileO
     if !dest_dir_path.exists() || !dest_dir_path.is_dir() {
         return Err(format!("Destination folder does not exist: {}", destination_dir));
     }
+    validate_path_security(dest_dir_path, false)?;
 
     let mut affected_paths = Vec::new();
     let mut errors = Vec::new();
@@ -2683,6 +2816,13 @@ pub fn move_items(sources: Vec<String>, destination_dir: String) -> Result<FileO
         if !src.exists() {
             failure_count += 1;
             errors.push(format!("Source does not exist: {}", src_str));
+            continue;
+        }
+
+        // Moving is destructive to the source path
+        if let Err(e) = validate_path_security(src, true) {
+            failure_count += 1;
+            errors.push(e);
             continue;
         }
 
@@ -2752,16 +2892,10 @@ pub fn rename_item(path: String, new_name: String) -> Result<String, String> {
         return Err(format!("Item does not exist: {}", path));
     }
 
+    validate_path_security(p, true)?;
+    validate_filename(&new_name)?;
+
     let trimmed_name = new_name.trim();
-    if trimmed_name.is_empty() {
-        return Err("Filename cannot be empty.".to_string());
-    }
-
-    let illegal_chars = ['\\', '/', ':', '*', '?', '"', '<', '>', '|'];
-    if trimmed_name.chars().any(|c| illegal_chars.contains(&c)) {
-        return Err("A filename cannot contain any of the following characters: \\ / : * ? \" < > |".to_string());
-    }
-
     let parent = p.parent().ok_or_else(|| "Cannot rename root directory.".to_string())?;
     let target = parent.join(trimmed_name);
 
@@ -2786,6 +2920,12 @@ pub fn delete_to_recycle_bin(paths: Vec<String>) -> Result<FileOperationResult, 
         if !p.exists() {
             failure_count += 1;
             errors.push(format!("Path does not exist: {}", path_str));
+            continue;
+        }
+
+        if let Err(e) = validate_path_security(p, true) {
+            failure_count += 1;
+            errors.push(e);
             continue;
         }
 
@@ -2825,6 +2965,12 @@ pub fn delete_permanently(paths: Vec<String>) -> Result<FileOperationResult, Str
             continue;
         }
 
+        if let Err(e) = validate_path_security(p, true) {
+            failure_count += 1;
+            errors.push(e);
+            continue;
+        }
+
         let del_res = if p.is_dir() {
             fs::remove_dir_all(p)
         } else {
@@ -2860,10 +3006,15 @@ pub fn create_directory(parent_dir: String, name: Option<String>) -> Result<Stri
         return Err(format!("Parent directory does not exist: {}", parent_dir));
     }
 
+    validate_path_security(parent, false)?;
+
     let base_name = name
         .map(|n| n.trim().to_string())
         .filter(|n| !n.is_empty())
         .unwrap_or_else(|| "New folder".to_string());
+
+    validate_filename(&base_name)?;
+
     let mut target = parent.join(&base_name);
 
     if target.exists() {
@@ -3022,6 +3173,10 @@ pub fn read_text_preview(path: String, max_bytes: Option<usize>) -> Result<TextP
     let p = Path::new(&path);
     if !p.exists() || !p.is_file() {
         return Err(format!("File does not exist: {}", path));
+    }
+
+    if crate::storage_engine::is_sensitive_path(&path) {
+        return Err("Preview blocked: File contains protected credentials or sensitive environment data.".to_string());
     }
 
     let meta = fs::metadata(p).map_err(|e| format!("Failed to read metadata: {}", e))?;
@@ -4539,6 +4694,50 @@ serde = { version = "1", features = ["derive"] }
         assert!(parsed_skip.dismissed);
 
         let _ = fs::remove_dir_all(&temp_dir);
+    }
+
+    #[test]
+    fn test_phase_20_security_boundaries() {
+        // 1. Filename validation
+        assert!(validate_filename("valid_project_name").is_ok());
+        assert!(validate_filename("feature-branch.txt").is_ok());
+        assert!(validate_filename("   ").is_err(), "Empty filename must be rejected");
+        assert!(validate_filename(".").is_err(), "'.' must be rejected");
+        assert!(validate_filename("..").is_err(), "'..' must be rejected");
+        assert!(validate_filename("invalid/slash").is_err(), "Slash must be rejected");
+        assert!(validate_filename("invalid\\backslash").is_err(), "Backslash must be rejected");
+        assert!(validate_filename("invalid:colon").is_err(), "Colon must be rejected");
+        assert!(validate_filename("ends_with_dot.").is_err(), "Trailing dot must be rejected");
+        assert!(validate_filename("ends_with_space ").is_err(), "Trailing space must be rejected");
+        assert!(validate_filename("CON").is_err(), "CON device name must be rejected");
+        assert!(validate_filename("con.txt").is_err(), "con.txt device name must be rejected");
+        assert!(validate_filename("PRN").is_err(), "PRN device name must be rejected");
+        assert!(validate_filename("aux.json").is_err(), "aux.json device name must be rejected");
+        assert!(validate_filename("NUL").is_err(), "NUL device name must be rejected");
+        assert!(validate_filename("COM1.log").is_err(), "COM1 device name must be rejected");
+
+        // 2. Path security validation
+        let drive_c = Path::new("C:\\");
+        assert!(validate_path_security(drive_c, false).is_err(), "Drive root must be rejected");
+        let drive_d = Path::new("D:\\");
+        assert!(validate_path_security(drive_d, false).is_err(), "Drive root must be rejected");
+
+        let win_dir = Path::new("C:\\Windows");
+        assert!(validate_path_security(win_dir, false).is_err(), "Windows directory must be rejected");
+        let prog_files = Path::new("C:\\Program Files");
+        assert!(validate_path_security(prog_files, false).is_err(), "Program Files must be rejected");
+
+        // 3. Sensitive indicators for destructive ops
+        let env_file = Path::new("D:\\Code\\my-app\\.env");
+        assert!(validate_path_security(env_file, true).is_err(), ".env file must be protected from deletion");
+        let ssh_key = Path::new("C:\\Users\\Admin\\.ssh\\id_rsa");
+        assert!(validate_path_security(ssh_key, true).is_err(), "SSH key must be protected from deletion");
+        let git_dir = Path::new("D:\\Code\\my-app\\.git");
+        assert!(validate_path_security(git_dir, true).is_err(), ".git directory must be protected from deletion");
+
+        // Safe normal path should pass non-destructive check
+        let safe_path = Path::new("D:\\Code\\my-app\\src\\App.tsx");
+        assert!(validate_path_security(safe_path, false).is_ok());
     }
 }
 
