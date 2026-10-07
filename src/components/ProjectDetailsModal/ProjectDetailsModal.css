@@ -1,0 +1,1088 @@
+.mahi-project-modal-card {
+  width: 580px;
+  max-width: 94vw;
+  background: #080f1d;
+  border: 1px solid rgba(47, 127, 255, 0.25);
+  border-radius: 14px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75), 0 0 32px rgba(47, 127, 255, 0.16);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: mahiModalSlideIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mahi-project-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 22px;
+  background: linear-gradient(180deg, rgba(20, 35, 60, 0.4) 0%, rgba(10, 18, 32, 0) 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.mahi-project-modal-glyph {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(47, 127, 255, 0.25) 0%, rgba(0, 229, 255, 0.15) 100%);
+  border: 1px solid rgba(47, 127, 255, 0.35);
+  color: #60a5fa;
+  font-size: 17px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  flex-shrink: 0;
+}
+
+.mahi-project-modal-title-box {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  overflow: hidden;
+  flex: 1;
+}
+
+.mahi-project-modal-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow: hidden;
+}
+
+.mahi-project-modal-name {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+  color: #f1f5f9;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mahi-project-modal-type-badge {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: rgba(47, 127, 255, 0.14);
+  color: #60a5fa;
+  border: 1px solid rgba(47, 127, 255, 0.25);
+  white-space: nowrap;
+}
+
+.mahi-project-modal-sub {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  color: #94a3b8;
+}
+
+.mahi-project-modal-sub .mahi-sparkle {
+  color: #00e5ff;
+}
+
+.mahi-project-modal-body {
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-height: 62vh;
+  overflow-y: auto;
+}
+
+.mahi-project-modal-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  gap: 12px;
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+.mahi-project-modal-empty {
+  padding: 30px;
+  text-align: center;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.mahi-modal-section {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.mahi-modal-section-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mahi-modal-section-label {
+  font-size: 11.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #64748b;
+}
+
+.mahi-modal-section-subtag {
+  font-size: 11px;
+  color: #475569;
+  font-family: monospace;
+}
+
+.mahi-modal-path-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 7px 10px;
+}
+
+.mahi-modal-path-text {
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 12px;
+  color: #93c5fd;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  user-select: all;
+}
+
+.mahi-modal-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 5px;
+  color: #cbd5e1;
+  font-size: 11.5px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.mahi-modal-copy-btn:hover {
+  background: rgba(47, 127, 255, 0.2);
+  border-color: rgba(47, 127, 255, 0.4);
+  color: #ffffff;
+}
+
+.mahi-modal-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 8px;
+}
+
+.mahi-modal-meta-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+
+.mahi-modal-meta-card.active {
+  border-color: rgba(47, 127, 255, 0.25);
+  background: rgba(15, 23, 42, 0.75);
+}
+
+.meta-icon {
+  flex-shrink: 0;
+  color: #64748b;
+}
+
+.meta-icon.git {
+  color: #f97316;
+}
+
+.meta-icon.docker {
+  color: #0284c7;
+}
+
+.meta-icon.pkg {
+  color: #a855f7;
+}
+
+.meta-icon.time {
+  color: #38bdf8;
+}
+
+.meta-info {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.meta-title {
+  font-size: 10.5px;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.meta-val {
+  font-size: 12px;
+  font-weight: 500;
+  color: #e2e8f0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mahi-modal-tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.mahi-tech-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: rgba(47, 127, 255, 0.1);
+  border: 1px solid rgba(47, 127, 255, 0.22);
+  color: #93c5fd;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.mahi-framework-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: rgba(0, 229, 255, 0.08);
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  color: #67e8f9;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.mahi-modal-scripts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 6px;
+}
+
+.mahi-script-card {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  padding: 5px 9px;
+  color: #e2e8f0;
+}
+
+.script-icon {
+  color: #a855f7;
+  flex-shrink: 0;
+}
+
+.script-name {
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 11.5px;
+  color: #e2e8f0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mahi-modal-files-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.mahi-file-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 9px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 5px;
+  font-size: 11.5px;
+  color: #cbd5e1;
+  font-family: 'Consolas', 'Courier New', monospace;
+}
+
+.file-icon {
+  color: #64748b;
+}
+
+.mahi-file-chip.env-chip {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.28);
+  color: #6ee7b7;
+}
+
+.env-shield-icon {
+  color: #10b981;
+}
+
+.mahi-project-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 22px;
+  background: rgba(10, 16, 28, 0.5);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.mahi-project-modal-actions-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mahi-modal-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: #e2e8f0;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.mahi-modal-action-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.mahi-modal-action-btn.primary.vs-code {
+  background: linear-gradient(135deg, rgba(47, 127, 255, 0.8) 0%, rgba(30, 95, 215, 0.8) 100%);
+  border-color: rgba(47, 127, 255, 0.9);
+  color: #ffffff;
+}
+
+.mahi-modal-action-btn.primary.vs-code:hover {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.95) 0%, rgba(37, 99, 235, 0.95) 100%);
+  box-shadow: 0 2px 10px rgba(47, 127, 255, 0.35);
+}
+
+.mahi-modal-close-action-btn {
+  padding: 6px 14px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  color: #94a3b8;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.mahi-modal-close-action-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+}
+
+/* ===== Phase 7B: Live Git Status Styles ===== */
+.mahi-git-section-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.git-title-icon {
+  color: #f97316;
+}
+
+.mahi-git-refresh-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 5px;
+  color: #94a3b8;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.mahi-git-refresh-btn:hover:not(:disabled) {
+  background: rgba(47, 127, 255, 0.18);
+  border-color: rgba(47, 127, 255, 0.35);
+  color: #ffffff;
+}
+
+.mahi-git-refresh-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.mahi-git-empty-card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: rgba(15, 23, 42, 0.4);
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.mahi-git-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(249, 115, 22, 0.22);
+  border-radius: 9px;
+  padding: 12px 14px;
+}
+
+.mahi-git-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mahi-git-branch-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(249, 115, 22, 0.12);
+  border: 1px solid rgba(249, 115, 22, 0.3);
+  border-radius: 6px;
+  padding: 3px 10px;
+}
+
+.git-branch-icon {
+  color: #f97316;
+}
+
+.git-branch-name {
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #fdba74;
+}
+
+.mahi-git-upstream-info {
+  display: flex;
+  align-items: center;
+}
+
+.mahi-git-divergence {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ahead-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #34d399;
+  background: rgba(52, 211, 153, 0.1);
+  border: 1px solid rgba(52, 211, 153, 0.25);
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+.behind-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #f87171;
+  background: rgba(248, 113, 113, 0.1);
+  border: 1px solid rgba(248, 113, 113, 0.25);
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+.synced-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.no-upstream-badge {
+  font-size: 11px;
+  color: #64748b;
+  font-style: italic;
+}
+
+.mahi-git-counts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: 6px;
+}
+
+.mahi-git-count-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  padding: 5px 9px;
+  font-size: 11.5px;
+}
+
+.mahi-git-count-chip.has-modified {
+  border-color: rgba(56, 189, 248, 0.3);
+  background: rgba(56, 189, 248, 0.08);
+}
+.mahi-git-count-chip.has-modified .count-num {
+  color: #38bdf8;
+}
+
+.mahi-git-count-chip.has-staged {
+  border-color: rgba(52, 211, 153, 0.3);
+  background: rgba(52, 211, 153, 0.08);
+}
+.mahi-git-count-chip.has-staged .count-num {
+  color: #34d399;
+}
+
+.mahi-git-count-chip.has-untracked {
+  border-color: rgba(251, 191, 36, 0.3);
+  background: rgba(251, 191, 36, 0.08);
+}
+.mahi-git-count-chip.has-untracked .count-num {
+  color: #fbbf24;
+}
+
+.mahi-git-count-chip.has-deleted {
+  border-color: rgba(248, 113, 113, 0.3);
+  background: rgba(248, 113, 113, 0.08);
+}
+.mahi-git-count-chip.has-deleted .count-num {
+  color: #f87171;
+}
+
+.mahi-git-count-chip.has-renamed {
+  border-color: rgba(168, 85, 247, 0.3);
+  background: rgba(168, 85, 247, 0.08);
+}
+.mahi-git-count-chip.has-renamed .count-num {
+  color: #c084fc;
+}
+
+.count-num {
+  font-weight: 700;
+  font-size: 13px;
+  color: #cbd5e1;
+}
+
+.count-label {
+  color: #94a3b8;
+  font-size: 11px;
+}
+
+.mahi-git-files-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  padding: 7px 10px;
+}
+
+.mahi-git-files-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 600;
+  color: #94a3b8;
+}
+
+.mahi-git-more-hint {
+  font-size: 10px;
+  color: #64748b;
+  font-style: italic;
+}
+
+.mahi-git-files-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 140px;
+  overflow-y: auto;
+}
+
+.mahi-git-file-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11.5px;
+  font-family: 'Consolas', 'Courier New', monospace;
+  padding: 2px 4px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.git-status-code {
+  font-weight: 700;
+  font-size: 11px;
+  padding: 1px 4px;
+  border-radius: 3px;
+  min-width: 18px;
+  text-align: center;
+}
+
+.git-status-code.m {
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.15);
+}
+
+.git-status-code.a {
+  color: #34d399;
+  background: rgba(52, 211, 153, 0.15);
+}
+
+.git-status-code.d {
+  color: #f87171;
+  background: rgba(248, 113, 113, 0.15);
+}
+
+.git-status-code.uu,
+.git-status-code.u {
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.15);
+}
+
+.git-file-name {
+  color: #cbd5e1;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.git-staged-tag {
+  font-size: 9.5px;
+  color: #34d399;
+  background: rgba(52, 211, 153, 0.12);
+  border: 1px solid rgba(52, 211, 153, 0.25);
+  border-radius: 3px;
+  padding: 1px 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.mahi-git-clean-banner {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #34d399;
+  font-size: 12px;
+  padding: 4px 6px;
+}
+
+.clean-icon {
+  color: #10b981;
+}
+
+.mahi-git-root-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 6px;
+}
+
+.git-root-label {
+  color: #64748b;
+}
+
+.git-root-path {
+  font-family: 'Consolas', 'Courier New', monospace;
+  color: #94a3b8;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mahi-git-error-banner {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #f87171;
+  font-size: 11.5px;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 5px;
+  padding: 5px 8px;
+}
+
+.mahi-git-loading {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #94a3b8;
+  font-size: 12px;
+  padding: 10px;
+}
+
+/* Phase 7C: Available Scripts & Process Management */
+.mahi-modal-scripts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mahi-script-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: rgba(15, 30, 56, 0.45);
+  border: 1px solid rgba(64, 128, 255, 0.12);
+  border-radius: 8px;
+  transition: all 160ms ease;
+}
+
+.mahi-script-row:hover {
+  background: rgba(20, 38, 70, 0.65);
+  border-color: rgba(64, 150, 255, 0.28);
+}
+
+.mahi-script-row.running {
+  border-color: rgba(16, 185, 129, 0.4);
+  background: rgba(16, 185, 129, 0.08);
+}
+
+.mahi-script-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.mahi-script-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #f1f5f9;
+}
+
+.mahi-script-glyph {
+  font-size: 10px;
+  color: #38bdf8;
+}
+
+.mahi-script-cmd {
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 11px;
+  color: #64748b;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mahi-script-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mahi-script-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 140ms ease;
+}
+
+.mahi-script-btn.run {
+  background: rgba(47, 127, 255, 0.16);
+  border: 1px solid rgba(47, 127, 255, 0.35);
+  color: #60a5fa;
+}
+
+.mahi-script-btn.run:hover:not(:disabled) {
+  background: rgba(47, 127, 255, 0.35);
+  border-color: #2f7fff;
+  color: #ffffff;
+}
+
+.mahi-script-btn.run:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.mahi-script-btn.stop {
+  background: rgba(239, 68, 68, 0.16);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #f87171;
+}
+
+.mahi-script-btn.stop:hover {
+  background: rgba(239, 68, 68, 0.3);
+  border-color: #ef4444;
+  color: #ffffff;
+}
+
+.mahi-modal-empty-scripts {
+  font-size: 12px;
+  color: #64748b;
+  font-style: italic;
+  padding: 6px 0;
+}
+
+.mahi-modal-script-error {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 12px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  border-radius: 7px;
+  color: #f87171;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+/* Process Section */
+.mahi-process-section {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 16px;
+}
+
+.mahi-process-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mahi-process-card {
+  background: rgba(10, 20, 36, 0.6);
+  border: 1px solid rgba(64, 128, 255, 0.15);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.mahi-process-card.status-running {
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+.mahi-process-card.status-failed {
+  border-color: rgba(239, 68, 68, 0.35);
+}
+
+.mahi-process-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.mahi-process-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mahi-process-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.mahi-process-status-pill.running {
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #34d399;
+}
+
+.mahi-process-status-pill.starting {
+  background: rgba(56, 189, 248, 0.15);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  color: #38bdf8;
+}
+
+.mahi-process-status-pill.exited {
+  background: rgba(148, 163, 184, 0.12);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  color: #94a3b8;
+}
+
+.mahi-process-status-pill.failed {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171;
+}
+
+.mahi-process-status-pill.stopped {
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: #fbbf24;
+}
+
+.proc-pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 8px #34d399;
+  animation: proc-pulse 1.4s infinite ease-in-out;
+}
+
+@keyframes proc-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+}
+
+.mahi-process-cmd-title {
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 12px;
+  font-weight: 550;
+  color: #cbd5e1;
+}
+
+.mahi-process-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mahi-proc-btn-stop {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  background: rgba(239, 68, 68, 0.14);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171;
+  cursor: pointer;
+  transition: all 140ms ease;
+}
+
+.mahi-proc-btn-stop:hover {
+  background: rgba(239, 68, 68, 0.28);
+  border-color: #ef4444;
+  color: #ffffff;
+}
+
+.mahi-proc-btn-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 5px;
+  font-size: 11px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #94a3b8;
+  cursor: pointer;
+  transition: all 140ms ease;
+}
+
+.mahi-proc-btn-toggle:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.mahi-process-log-container {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(5, 12, 24, 0.85);
+}
+
+.mahi-process-log-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.mahi-log-count {
+  font-size: 10px;
+  color: #64748b;
+  font-family: 'Consolas', 'Courier New', monospace;
+}
+
+.mahi-log-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10.5px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #94a3b8;
+  cursor: pointer;
+  transition: all 140ms ease;
+}
+
+.mahi-log-copy-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+}
+
+.mahi-process-log-viewer {
+  margin: 0;
+  padding: 8px 10px;
+  max-height: 160px;
+  overflow-y: auto;
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 11px;
+  line-height: 1.45;
+  color: #94a3b8;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.mahi-process-log-viewer .log-empty {
+  color: #475569;
+  font-style: italic;
+}
+
+

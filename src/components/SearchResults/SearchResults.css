@@ -1,0 +1,336 @@
+.mahi-search-results-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: mahiFadeIn 160ms ease-out;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 16px;
+}
+
+@keyframes mahiFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mahi-search-results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 4px;
+}
+
+.mahi-search-count-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #00d2ff;
+  letter-spacing: 0.04em;
+  background: rgba(0, 210, 255, 0.08);
+  border: 1px solid rgba(0, 210, 255, 0.22);
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.mahi-sparkle {
+  color: #00d2ff;
+}
+
+.mahi-search-hint {
+  font-size: 11.5px;
+  color: #526685;
+}
+
+.mahi-search-results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mahi-search-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  background: rgba(10, 22, 40, 0.65);
+  border: 1px solid rgba(64, 128, 255, 0.14);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 140ms ease-out;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.mahi-search-item:hover,
+.mahi-search-item.is-selected {
+  background: rgba(16, 36, 68, 0.92);
+  border-color: #2f7fff;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.4), 0 0 16px rgba(47, 127, 255, 0.24);
+  transform: translateX(3px);
+}
+
+.mahi-search-item.is-selected {
+  border-color: #00d2ff;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45), 0 0 20px rgba(0, 210, 255, 0.28);
+}
+
+.mahi-item-glyph-box {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+}
+
+.mahi-item-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mahi-item-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mahi-item-name {
+  font-size: 14px;
+  font-weight: 650;
+  color: #f0f4fc;
+  letter-spacing: 0.01em;
+}
+
+.mahi-item-type-badge {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 2px 7px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 5px;
+  color: #8ea0bc;
+}
+
+.mahi-search-git-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10.5px;
+  font-family: 'Consolas', 'Courier New', monospace;
+  color: #fdba74;
+  background: rgba(249, 115, 22, 0.1);
+  border: 1px solid rgba(249, 115, 22, 0.25);
+  padding: 1px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.search-git-icon {
+  color: #f97316;
+}
+
+.mahi-item-tags {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.mahi-item-tag {
+  font-size: 10.5px;
+  font-weight: 500;
+  color: #8ea0bc;
+  background: rgba(47, 127, 255, 0.1);
+  border: 1px solid rgba(47, 127, 255, 0.18);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.mahi-item-tag-more {
+  font-size: 10px;
+  color: #526685;
+}
+
+.mahi-item-path {
+  font-size: 11px;
+  color: #526685;
+  font-family: monospace;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 500px;
+}
+
+.mahi-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.mahi-action-pill-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(14, 28, 52, 0.7);
+  border: 1px solid rgba(64, 128, 255, 0.18);
+  color: #b0c4de;
+  font-size: 11px;
+  font-weight: 550;
+  padding: 6px 10px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: all 140ms ease;
+  white-space: nowrap;
+}
+
+.mahi-action-pill-btn:hover {
+  background: rgba(47, 127, 255, 0.22);
+  border-color: #2f7fff;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.mahi-action-pill-btn.vs-code-btn {
+  background: rgba(0, 122, 204, 0.16);
+  border-color: rgba(0, 122, 204, 0.38);
+  color: #64b5f6;
+}
+
+.mahi-action-pill-btn.vs-code-btn:hover {
+  background: rgba(0, 122, 204, 0.35);
+  border-color: #007acc;
+  color: #ffffff;
+}
+
+.mahi-action-pill-btn.primary-btn {
+  background: linear-gradient(135deg, #00d2ff, #2f7fff);
+  border: none;
+  color: #030a16;
+  padding: 6px 10px;
+  font-weight: 700;
+}
+
+.mahi-action-pill-btn.primary-btn:hover {
+  filter: brightness(1.15);
+  box-shadow: 0 0 12px rgba(0, 210, 255, 0.4);
+}
+
+.mahi-item-selected-indicator {
+  position: absolute;
+  right: -8px;
+  width: 20px;
+  height: 20px;
+  background: #00d2ff;
+  color: #030a16;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 10px rgba(0, 210, 255, 0.6);
+}
+
+.mahi-search-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 56px 24px;
+  text-align: center;
+  background: rgba(10, 22, 40, 0.5);
+  border: 1px dashed rgba(64, 128, 255, 0.2);
+  border-radius: 16px;
+  margin-top: 12px;
+}
+
+.mahi-search-empty-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(47, 127, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #526685;
+  margin-bottom: 16px;
+}
+
+.mahi-search-empty-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #f0f4fc;
+  margin: 0 0 8px 0;
+}
+
+.mahi-search-empty-desc {
+  font-size: 13px;
+  color: #8ea0bc;
+  max-width: 520px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.mahi-search-empty-desc code {
+  color: #00d2ff;
+  background: rgba(0, 210, 255, 0.08);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.mahi-search-footer-bar {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: rgba(6, 14, 26, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mahi-shortcut-guide {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+}
+
+.mahi-key {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  padding: 2px 5px;
+  font-family: inherit;
+  font-weight: 600;
+  color: #f0f4fc;
+}
+
+.mahi-key-label {
+  color: #7b8fa8;
+}
+
+.mahi-sep {
+  color: #3b4d66;
+  margin: 0 4px;
+}

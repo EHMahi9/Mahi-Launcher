@@ -1,0 +1,143 @@
+/* ===================== MAHI TAB BAR ===================== */
+.mahi-tab-bar {
+  display: flex;
+  align-items: center;
+  height: 38px;
+  min-height: 38px;
+  background: rgba(5, 11, 20, 0.85);
+  border-bottom: 1px solid rgba(47, 127, 255, 0.12);
+  padding: 0 8px 0 6px;
+  gap: 0;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.mahi-tab-list {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  flex: 1;
+  min-width: 0;
+  scrollbar-width: none;
+  padding-bottom: 0;
+  height: 100%;
+  align-items: center;
+}
+
+.mahi-tab-list::-webkit-scrollbar {
+  display: none;
+}
+
+/* Individual Tab */
+.mahi-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  min-width: 80px;
+  max-width: 200px;
+  padding: 0 8px 0 10px;
+  border-radius: 8px 8px 0 0;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: none;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 120ms ease, border-color 120ms ease;
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+}
+
+.mahi-tab:hover:not(.is-active) {
+  background: rgba(47, 127, 255, 0.1);
+  border-color: rgba(47, 127, 255, 0.2);
+}
+
+.mahi-tab.is-active {
+  background: rgba(47, 127, 255, 0.16);
+  border-color: rgba(47, 127, 255, 0.35);
+  border-bottom-color: transparent;
+  box-shadow: 0 -1px 6px rgba(47, 127, 255, 0.12);
+}
+
+.mahi-tab-icon {
+  color: #4a90e2;
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+
+.mahi-tab.is-active .mahi-tab-icon {
+  color: #2f7fff;
+  opacity: 1;
+}
+
+.mahi-tab-title {
+  font-size: 12px;
+  font-weight: 500;
+  color: #8ea0bc;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+  letter-spacing: 0.01em;
+}
+
+.mahi-tab.is-active .mahi-tab-title {
+  color: #c8d8f0;
+}
+
+/* Close button on tab */
+.mahi-tab-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  background: transparent;
+  border: none;
+  color: #8ea0bc;
+  cursor: pointer;
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity 100ms ease, background 100ms ease, color 100ms ease;
+  padding: 0;
+}
+
+.mahi-tab:hover .mahi-tab-close,
+.mahi-tab.is-active .mahi-tab-close {
+  opacity: 0.7;
+}
+
+.mahi-tab-close:hover {
+  opacity: 1 !important;
+  background: rgba(255, 80, 80, 0.18);
+  color: #ff7070;
+}
+
+/* New Tab Button */
+.mahi-tab-new-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: #8ea0bc;
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-left: 4px;
+  transition: all 130ms ease;
+}
+
+.mahi-tab-new-btn:hover {
+  background: rgba(47, 127, 255, 0.16);
+  border-color: rgba(47, 127, 255, 0.3);
+  color: #2f7fff;
+}

@@ -1,0 +1,105 @@
+.mahi-titlebar {
+  height: 38px;
+  background: rgba(5, 11, 20, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(64, 128, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0 0 14px;
+  user-select: none;
+  z-index: 1000;
+  position: relative;
+}
+
+.mahi-titlebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mahi-logo-icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  background: linear-gradient(135deg, #1b5edb 0%, #00d2ff 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 10px rgba(0, 180, 255, 0.35);
+}
+
+.mahi-logo-core {
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  background: #ffffff;
+}
+
+.mahi-app-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #f0f4fc;
+}
+
+.mahi-titlebar-pill {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #3b82f6;
+  background: rgba(59, 130, 246, 0.12);
+  border: 1px solid rgba(59, 130, 246, 0.22);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.mahi-titlebar-center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.mahi-titlebar-status-text {
+  font-size: 11px;
+  color: #526685;
+  letter-spacing: 0.02em;
+}
+
+.mahi-window-controls {
+  display: flex;
+  height: 100%;
+}
+
+.mahi-win-btn {
+  width: 44px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: #8ea0bc;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  transition: background-color 140ms ease, color 140ms ease;
+  outline: none;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+.mahi-win-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #f0f4fc;
+  border-color: transparent;
+}
+
+.mahi-win-btn.close:hover {
+  background: #e81123;
+  color: #ffffff;
+  border-color: transparent;
+}

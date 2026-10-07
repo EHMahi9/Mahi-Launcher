@@ -1,0 +1,279 @@
+.mahi-drive-view {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px 28px 40px 28px;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  animation: mahiFadeIn 160ms ease-out;
+}
+
+.mahi-drive-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(64, 128, 255, 0.12);
+}
+
+.mahi-drive-title-area {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.mahi-drive-header-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(0, 210, 255, 0.12);
+  border: 1px solid rgba(0, 210, 255, 0.28);
+  color: #00d2ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mahi-drive-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #f0f4fc;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.mahi-drive-subtitle {
+  font-size: 12px;
+  color: #8ea0bc;
+  margin: 3px 0 0 0;
+}
+
+.mahi-drive-refresh-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(14, 28, 52, 0.7);
+  border: 1px solid rgba(64, 128, 255, 0.2);
+  color: #b0c4de;
+  font-size: 12px;
+  font-weight: 550;
+  padding: 7px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.mahi-drive-refresh-btn:hover {
+  background: rgba(47, 127, 255, 0.22);
+  border-color: #2f7fff;
+  color: #ffffff;
+}
+
+/* Grid */
+.mahi-drives-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 18px;
+}
+
+.mahi-drive-card {
+  background: rgba(10, 22, 40, 0.65);
+  border: 1px solid rgba(64, 128, 255, 0.16);
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 160ms ease-out;
+}
+
+.mahi-drive-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(64, 160, 255, 0.35), transparent);
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+
+.mahi-drive-card:hover {
+  background: rgba(14, 30, 54, 0.88);
+  border-color: rgba(64, 150, 255, 0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.35), 0 0 16px rgba(47, 127, 255, 0.14);
+}
+
+.mahi-drive-card:hover::before {
+  opacity: 1;
+}
+
+.mahi-drive-card.is-selected {
+  border-color: #00d2ff;
+  background: rgba(16, 36, 68, 0.95);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45), 0 0 20px rgba(0, 210, 255, 0.28);
+}
+
+.mahi-drive-card-top {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.mahi-drive-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(47, 127, 255, 0.12);
+  border: 1px solid rgba(47, 127, 255, 0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.mahi-drive-type-icon.fixed { color: #00d2ff; }
+.mahi-drive-type-icon.cloud { color: #64b5f6; }
+.mahi-drive-type-icon.usb { color: #81c784; }
+.mahi-drive-type-icon.disc { color: #ba68c8; }
+
+.mahi-drive-identity {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mahi-drive-name-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.mahi-drive-label {
+  font-size: 15px;
+  font-weight: 650;
+  color: #f0f4fc;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mahi-drive-letter {
+  font-size: 13px;
+  font-weight: 600;
+  color: #8ea0bc;
+}
+
+.mahi-drive-badges {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mahi-drive-type-badge {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 1px 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  color: #8ea0bc;
+}
+
+.mahi-drive-fs-badge {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 1px 6px;
+  background: rgba(47, 127, 255, 0.1);
+  border: 1px solid rgba(47, 127, 255, 0.18);
+  border-radius: 4px;
+  color: #64b5f6;
+}
+
+.mahi-drive-open-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #526685;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 140ms ease;
+  flex-shrink: 0;
+}
+
+.mahi-drive-card:hover .mahi-drive-open-btn {
+  color: #00d2ff;
+  border-color: rgba(0, 210, 255, 0.35);
+  background: rgba(0, 210, 255, 0.1);
+  transform: translate(2px, -2px);
+}
+
+/* Capacity Section */
+.mahi-drive-capacity-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mahi-drive-progress-track {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+
+.mahi-drive-progress-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 300ms ease-out;
+}
+
+.mahi-drive-progress-fill.normal {
+  background: linear-gradient(90deg, #00d2ff, #2f7fff);
+  box-shadow: 0 0 8px rgba(0, 210, 255, 0.4);
+}
+
+.mahi-drive-progress-fill.warning {
+  background: linear-gradient(90deg, #ffa726, #fb8c00);
+  box-shadow: 0 0 8px rgba(255, 167, 38, 0.4);
+}
+
+.mahi-drive-progress-fill.critical {
+  background: linear-gradient(90deg, #ef5350, #d32f2f);
+  box-shadow: 0 0 8px rgba(239, 83, 80, 0.5);
+}
+
+.mahi-drive-capacity-labels {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11.5px;
+}
+
+.mahi-drive-free-text {
+  color: #8ea0bc;
+}
+
+.mahi-drive-pct-text {
+  color: #526685;
+  font-weight: 550;
+}

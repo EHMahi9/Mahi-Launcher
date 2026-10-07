@@ -1,0 +1,716 @@
+/* MAHI Phase 9A Developer Environment Health View Styles */
+
+.mahi-health-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  padding: 24px 32px;
+  overflow-y: auto;
+  gap: 20px;
+  color: #f0f4fc;
+}
+
+/* Header Area */
+.mahi-health-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(64, 128, 255, 0.12);
+  gap: 16px;
+}
+
+.mahi-health-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mahi-health-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mahi-health-title-row h1 {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #ffffff 40%, #8ec5fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.mahi-health-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgba(0, 229, 255, 0.12);
+  color: #00e5ff;
+  border: 1px solid rgba(0, 229, 255, 0.28);
+}
+
+.mahi-health-subtitle {
+  font-size: 13px;
+  color: #8fa0bc;
+  max-width: 720px;
+  line-height: 1.45;
+}
+
+.mahi-health-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mahi-health-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  background: rgba(64, 128, 255, 0.14);
+  color: #e2edff;
+  border: 1px solid rgba(64, 128, 255, 0.3);
+}
+
+.mahi-health-btn:hover:not(:disabled) {
+  background: rgba(64, 128, 255, 0.25);
+  border-color: rgba(64, 128, 255, 0.5);
+  box-shadow: 0 0 12px rgba(64, 128, 255, 0.25);
+}
+
+.mahi-health-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Safety Banner */
+.mahi-health-safety-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-radius: 6px;
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.22);
+  color: #a7f3d0;
+  font-size: 12.5px;
+}
+
+/* Overview Summary Card Grid */
+.mahi-health-metrics-grid {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 1024px) {
+  .mahi-health-metrics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.mahi-health-score-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, rgba(10, 24, 44, 0.75) 0%, rgba(5, 11, 20, 0.85) 100%);
+  border: 1px solid rgba(64, 128, 255, 0.2);
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.mahi-health-score-ring {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 4px solid;
+  margin-bottom: 12px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.mahi-health-score-number {
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.mahi-health-score-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #8fa0bc;
+  margin-top: 2px;
+}
+
+.mahi-health-stat-pill {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.mahi-health-summary-panel {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 1024px) {
+  .mahi-health-summary-panel {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .mahi-health-summary-panel {
+    grid-template-columns: 1fr;
+  }
+}
+
+.mahi-health-stat-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: rgba(10, 24, 44, 0.6);
+  border: 1px solid rgba(64, 128, 255, 0.15);
+  border-radius: 8px;
+  padding: 16px;
+  position: relative;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.mahi-health-stat-box:hover {
+  background: rgba(15, 34, 60, 0.75);
+  border-color: rgba(64, 128, 255, 0.35);
+  transform: translateY(-1px);
+}
+
+.mahi-health-stat-box .count {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.mahi-health-stat-box .label {
+  font-size: 12px;
+  color: #8fa0bc;
+}
+
+/* Tabs Bar */
+.mahi-health-tabs-bar {
+  display: flex;
+  gap: 6px;
+  border-bottom: 1px solid rgba(64, 128, 255, 0.12);
+  padding-bottom: 4px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(64, 128, 255, 0.25) transparent;
+}
+
+.mahi-health-tabs-bar::-webkit-scrollbar {
+  height: 4px;
+}
+
+.mahi-health-tabs-bar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.mahi-health-tabs-bar::-webkit-scrollbar-thumb {
+  background: rgba(64, 128, 255, 0.25);
+  border-radius: 4px;
+}
+
+.mahi-health-tabs-bar::-webkit-scrollbar-thumb:hover {
+  background: rgba(64, 128, 255, 0.45);
+}
+
+.mahi-health-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 6px 6px 0 0;
+  background: transparent;
+  color: #8fa0bc;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  position: relative;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.mahi-health-tab:hover {
+  color: #d1e2fc;
+  background: rgba(64, 128, 255, 0.06);
+}
+
+.mahi-health-tab.active {
+  color: #00e5ff;
+  background: rgba(0, 229, 255, 0.08);
+  border-bottom: 2px solid #00e5ff;
+}
+
+.mahi-health-tab-badge {
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #e2edff;
+}
+
+/* Panels */
+.mahi-health-content-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Tool Inventory Table / Cards */
+.mahi-health-card {
+  background: rgba(10, 24, 44, 0.55);
+  border: 1px solid rgba(64, 128, 255, 0.15);
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mahi-health-table-wrap {
+  overflow-x: auto;
+  border: 1px solid rgba(64, 128, 255, 0.15);
+  border-radius: 8px;
+  background: rgba(10, 24, 44, 0.6);
+}
+
+.mahi-health-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  text-align: left;
+}
+
+.mahi-health-table th {
+  padding: 12px 14px;
+  background: rgba(5, 15, 30, 0.8);
+  color: #8fa0bc;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(64, 128, 255, 0.15);
+}
+
+.mahi-health-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(64, 128, 255, 0.08);
+  vertical-align: middle;
+}
+
+.mahi-health-table tr:hover td {
+  background: rgba(64, 128, 255, 0.04);
+}
+
+.mahi-health-mono {
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 12px;
+  color: #b9d5fc;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Severity Tag */
+.mahi-severity-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.mahi-severity-healthy {
+  background: rgba(16, 185, 129, 0.12);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.mahi-severity-info {
+  background: rgba(59, 130, 246, 0.12);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.mahi-severity-warning {
+  background: rgba(245, 158, 11, 0.12);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.mahi-severity-critical {
+  background: rgba(239, 68, 68, 0.12);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* Findings Card */
+.mahi-finding-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  border-radius: 8px;
+  background: rgba(10, 24, 44, 0.65);
+  border: 1px solid rgba(64, 128, 255, 0.15);
+  position: relative;
+}
+
+.mahi-finding-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mahi-finding-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mahi-finding-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #f0f4fc;
+}
+
+.mahi-finding-evidence {
+  font-family: 'Consolas', monospace;
+  font-size: 12px;
+  color: #94a3b8;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 8px 12px;
+  border-radius: 6px;
+  border-left: 3px solid rgba(64, 128, 255, 0.4);
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.mahi-finding-explanation {
+  font-size: 13px;
+  color: #cbd5e1;
+  line-height: 1.45;
+}
+
+.mahi-finding-action {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.08);
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px dashed rgba(56, 189, 248, 0.25);
+}
+
+/* Conflict & Version Card */
+.mahi-version-group-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: rgba(10, 24, 44, 0.6);
+  border: 1px solid rgba(64, 128, 255, 0.16);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.mahi-version-instance-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.mahi-version-instance-row.active-instance {
+  border-color: rgba(16, 185, 129, 0.4);
+  background: rgba(16, 185, 129, 0.06);
+}
+
+/* Loading / Empty States */
+.mahi-health-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 320px;
+  gap: 16px;
+  color: #8fa0bc;
+}
+
+.mahi-health-spin {
+  animation: mahi-spin 1s linear infinite;
+}
+
+@keyframes mahi-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ---------------------------------------------------- */
+/* PHASE 9B REPAIR CENTER STYLES */
+/* ---------------------------------------------------- */
+
+.mahi-repair-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: rgba(10, 24, 44, 0.7);
+  border: 1px solid rgba(64, 128, 255, 0.2);
+  border-radius: 8px;
+  padding: 18px;
+  transition: border-color 0.15s ease;
+}
+
+.mahi-repair-card:hover {
+  border-color: rgba(64, 128, 255, 0.4);
+}
+
+.mahi-repair-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.mahi-repair-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mahi-repair-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #f0f4fc;
+}
+
+.mahi-repair-risk-low {
+  background: rgba(16, 185, 129, 0.12);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.mahi-repair-risk-med {
+  background: rgba(245, 158, 11, 0.12);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.mahi-repair-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.mahi-status-available {
+  background: rgba(0, 229, 255, 0.12);
+  color: #00e5ff;
+  border: 1px solid rgba(0, 229, 255, 0.3);
+}
+
+.mahi-status-completed {
+  background: rgba(16, 185, 129, 0.12);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.mahi-status-failed {
+  background: rgba(239, 68, 68, 0.12);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.mahi-status-rolledback {
+  background: rgba(168, 85, 247, 0.12);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.mahi-status-unavailable {
+  background: rgba(100, 116, 139, 0.12);
+  color: #94a3b8;
+  border: 1px solid rgba(100, 116, 139, 0.25);
+}
+
+.mahi-repair-diff-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.mahi-diff-box {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.mahi-diff-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #8fa0bc;
+}
+
+.mahi-repair-actions-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(64, 128, 255, 0.1);
+}
+
+/* Modal Overlay & Modal Window */
+.mahi-repair-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(3, 7, 18, 0.82);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.mahi-repair-modal {
+  width: 100%;
+  max-width: 620px;
+  background: #071322;
+  border: 1px solid rgba(64, 128, 255, 0.3);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6), 0 0 24px rgba(64, 128, 255, 0.15);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  max-height: 90vh;
+}
+
+.mahi-repair-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(64, 128, 255, 0.15);
+  background: rgba(10, 24, 44, 0.7);
+}
+
+.mahi-repair-modal-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+}
+
+.mahi-repair-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 20px;
+  border-top: 1px solid rgba(64, 128, 255, 0.15);
+  background: rgba(10, 24, 44, 0.6);
+}
+
+.mahi-repair-confirm-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  background: #00e5ff;
+  color: #030712;
+  border: none;
+  transition: all 0.15s ease;
+}
+
+.mahi-repair-confirm-btn:hover:not(:disabled) {
+  background: #38bdf8;
+  box-shadow: 0 0 16px rgba(0, 229, 255, 0.4);
+}
+
+.mahi-repair-confirm-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.mahi-repair-cancel-btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.mahi-repair-cancel-btn:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+

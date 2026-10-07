@@ -1,0 +1,103 @@
+.mahi-searchbar-container {
+  width: 100%;
+  max-width: 680px;
+}
+
+.mahi-searchbar-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: rgba(10, 22, 40, 0.78);
+  border: 1px solid rgba(64, 128, 255, 0.22);
+  border-radius: 12px;
+  padding: 0 14px;
+  height: 44px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 180ms ease-out;
+}
+
+.mahi-searchbar-wrapper:hover {
+  border-color: rgba(64, 150, 255, 0.38);
+  background: rgba(12, 26, 48, 0.86);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.32), 0 0 12px rgba(47, 127, 255, 0.12);
+}
+
+.mahi-searchbar-wrapper:focus-within {
+  border-color: #2f7fff;
+  background: rgba(12, 28, 52, 0.95);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 20px rgba(47, 127, 255, 0.28);
+}
+
+.mahi-search-icon {
+  color: #526685;
+  margin-right: 12px;
+  flex-shrink: 0;
+  transition: color 180ms ease;
+}
+
+.mahi-searchbar-wrapper:focus-within .mahi-search-icon {
+  color: #00d2ff;
+}
+
+.mahi-search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #f0f4fc;
+  font-size: 13.5px;
+  font-weight: 450;
+  font-family: inherit;
+  padding: 0;
+  margin: 0;
+  box-shadow: none;
+}
+
+.mahi-search-input::placeholder {
+  color: #526685;
+  font-weight: 400;
+}
+
+.mahi-search-shortcut-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(5, 11, 20, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #8ea0bc;
+  letter-spacing: 0.03em;
+  user-select: none;
+  flex-shrink: 0;
+  transition: border-color 180ms ease;
+}
+
+.mahi-searchbar-wrapper:focus-within .mahi-search-shortcut-badge {
+  border-color: rgba(47, 127, 255, 0.3);
+  color: #2f7fff;
+}
+
+.mahi-search-clear-btn {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #7b8fa8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.mahi-search-clear-btn:hover {
+  color: #f0f4fc;
+  background: rgba(255, 255, 255, 0.08);
+}
+

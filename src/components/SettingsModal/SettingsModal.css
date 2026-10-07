@@ -1,0 +1,566 @@
+.mahi-settings-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 9, 20, 0.78);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: mahiSettingsFadeIn 160ms ease-out;
+}
+
+@keyframes mahiSettingsFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.mahi-settings-modal {
+  width: 560px;
+  max-width: 92vw;
+  background: rgba(10, 22, 40, 0.95);
+  border: 1px solid rgba(64, 128, 255, 0.22);
+  border-radius: 14px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 24px rgba(47, 127, 255, 0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: mahiSettingsScaleUp 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes mahiSettingsScaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.mahi-settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(14, 30, 54, 0.6);
+}
+
+.mahi-settings-title-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mahi-settings-icon-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(47, 127, 255, 0.15);
+  border: 1px solid rgba(47, 127, 255, 0.3);
+  color: #00d2ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mahi-settings-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #f0f4fc;
+}
+
+.mahi-settings-subtitle {
+  font-size: 11.5px;
+  color: #8ea0bc;
+}
+
+.mahi-settings-close-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #8ea0bc;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 140ms ease;
+}
+
+.mahi-settings-close-btn:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+}
+
+.mahi-settings-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.mahi-settings-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mahi-settings-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mahi-section-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mahi-section-heading h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+.section-icon {
+  color: #2f7fff;
+}
+
+.mahi-settings-refresh-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #8ea0bc;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 140ms ease;
+}
+
+.mahi-settings-refresh-btn:hover:not(:disabled) {
+  background: rgba(47, 127, 255, 0.2);
+  color: #ffffff;
+  border-color: #2f7fff;
+}
+
+.mahi-settings-refresh-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.spinning {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.mahi-settings-desc {
+  font-size: 12.5px;
+  color: #94a3b8;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.mahi-settings-desc code {
+  background: rgba(15, 23, 42, 0.8);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Consolas', 'Courier New', monospace;
+  color: #7dd3fc;
+  font-size: 11.5px;
+}
+
+.mahi-storage-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  background: rgba(15, 26, 46, 0.7);
+  border: 1px solid rgba(64, 128, 255, 0.16);
+  border-radius: 10px;
+}
+
+.storage-metric-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #64748b;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.storage-metric-value-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.storage-metric-num {
+  font-size: 24px;
+  font-weight: 700;
+  color: #f1f5f9;
+  font-family: 'Consolas', 'Courier New', monospace;
+}
+
+.storage-metric-gb {
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+.storage-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11.5px;
+  font-weight: 550;
+}
+
+.storage-badge.warning {
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: #fbbf24;
+}
+
+.storage-badge.clean {
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #34d399;
+}
+
+.mahi-safety-callout {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: rgba(47, 127, 255, 0.08);
+  border: 1px solid rgba(47, 127, 255, 0.2);
+  border-radius: 8px;
+  font-size: 11.5px;
+  color: #93c5fd;
+  line-height: 1.4;
+}
+
+.safety-icon {
+  color: #38bdf8;
+  flex-shrink: 0;
+}
+
+.mahi-settings-error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 8px;
+  font-size: 12px;
+  color: #fca5a5;
+}
+
+.mahi-settings-success {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: 8px;
+  font-size: 12px;
+  color: #6ee7b7;
+}
+
+.mahi-settings-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.mahi-clean-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: rgba(239, 68, 68, 0.16);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #fca5a5;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 160ms ease;
+}
+
+.mahi-clean-btn:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.28);
+  border-color: #ef4444;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.mahi-clean-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.mahi-confirm-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  border-radius: 8px;
+}
+
+.mahi-confirm-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  color: #fecaca;
+}
+
+.mahi-confirm-text code {
+  color: #f87171;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+
+.mahi-confirm-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.mahi-confirm-yes-btn {
+  background: #dc2626;
+  border: 1px solid #ef4444;
+  color: #ffffff;
+  padding: 7px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 140ms ease;
+}
+
+.mahi-confirm-yes-btn:hover:not(:disabled) {
+  background: #b91c1c;
+}
+
+.mahi-confirm-cancel-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #cbd5e1;
+  padding: 7px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 140ms ease;
+}
+
+.mahi-confirm-cancel-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.mahi-settings-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(14, 30, 54, 0.4);
+}
+
+.mahi-settings-footer-note {
+  font-size: 11px;
+  color: #64748b;
+}
+
+.mahi-settings-done-btn {
+  background: rgba(47, 127, 255, 0.2);
+  border: 1px solid rgba(47, 127, 255, 0.4);
+  color: #93c5fd;
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 550;
+  cursor: pointer;
+  transition: all 140ms ease;
+}
+
+.mahi-settings-done-btn:hover {
+  background: rgba(47, 127, 255, 0.35);
+  border-color: #2f7fff;
+  color: #ffffff;
+}
+
+/* Phase 18 Settings Tab Bar */
+.mahi-settings-tabs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 20px;
+  background: rgba(8, 18, 32, 0.7);
+  border-bottom: 1px solid rgba(64, 128, 255, 0.12);
+}
+
+.mahi-settings-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: #8ea0bc;
+  font-size: 12px;
+  font-weight: 550;
+  cursor: pointer;
+  transition: all 140ms ease;
+}
+
+.mahi-settings-tab:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: #cbd5e1;
+}
+
+.mahi-settings-tab.active {
+  background: rgba(47, 127, 255, 0.15);
+  border-color: rgba(47, 127, 255, 0.35);
+  color: #00d2ff;
+}
+
+/* Phase 18 Keyboard Shortcuts & Help Grid */
+.mahi-shortcuts-table {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: rgba(8, 18, 32, 0.5);
+  border: 1px solid rgba(64, 128, 255, 0.12);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.mahi-shortcut-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 8px;
+  border-radius: 5px;
+  transition: background 120ms ease;
+}
+
+.mahi-shortcut-row:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.mahi-shortcut-label {
+  font-size: 12px;
+  color: #cbd5e1;
+}
+
+.mahi-shortcut-keys {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.mahi-kbd {
+  display: inline-block;
+  padding: 2px 6px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 11px;
+  font-weight: 600;
+  color: #00d2ff;
+  background: rgba(14, 30, 54, 0.85);
+  border: 1px solid rgba(64, 128, 255, 0.3);
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* Phase 18 About Grid & Card */
+.mahi-about-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: rgba(12, 26, 46, 0.6);
+  border: 1px solid rgba(64, 128, 255, 0.18);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+
+.mahi-about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.mahi-about-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mahi-about-label {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.mahi-about-value {
+  font-size: 12px;
+  color: #f0f4fc;
+  font-weight: 500;
+}
+
+.mahi-nav-link-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: rgba(47, 127, 255, 0.08);
+  border: 1px solid rgba(47, 127, 255, 0.22);
+  color: #f0f4fc;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 140ms ease;
+  text-align: left;
+}
+
+.mahi-nav-link-btn:hover {
+  background: rgba(47, 127, 255, 0.16);
+  border-color: rgba(47, 127, 255, 0.4);
+  transform: translateY(-1px);
+}
+

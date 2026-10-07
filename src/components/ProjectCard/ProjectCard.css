@@ -1,0 +1,291 @@
+.mahi-project-card {
+  background: rgba(10, 22, 40, 0.65);
+  border: 1px solid rgba(64, 128, 255, 0.14);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 14px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 180ms ease-out;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.mahi-project-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(64, 160, 255, 0.3), transparent);
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
+.mahi-project-card:hover {
+  background: rgba(14, 30, 54, 0.88);
+  border-color: rgba(64, 150, 255, 0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), 0 0 16px rgba(47, 127, 255, 0.12);
+}
+
+.mahi-project-card:hover::before {
+  opacity: 1;
+}
+
+.mahi-project-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.mahi-project-icon-box {
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+}
+
+.mahi-project-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.mahi-project-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.mahi-project-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #f0f4fc;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mahi-card-launch-btn {
+  background: transparent;
+  border: none;
+  padding: 3px;
+  margin: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  color: #526685;
+  transition: all 180ms ease;
+}
+
+.mahi-card-launch-btn:hover {
+  background: rgba(0, 210, 255, 0.12);
+}
+
+.mahi-project-arrow {
+  color: #526685;
+  transition: all 180ms ease;
+  flex-shrink: 0;
+}
+
+.mahi-project-card:hover .mahi-project-arrow,
+.mahi-card-launch-btn:hover .mahi-project-arrow {
+  color: #00d2ff;
+  transform: translate(2px, -2px);
+}
+
+.mahi-project-tech {
+  font-size: 11.5px;
+  color: #8ea0bc;
+  margin-top: 0;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mahi-project-sub-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 3px;
+  overflow: hidden;
+}
+
+.mahi-card-git-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 6px;
+  background: rgba(249, 115, 22, 0.1);
+  border: 1px solid rgba(249, 115, 22, 0.25);
+  border-radius: 4px;
+  font-size: 10.5px;
+  font-family: 'Consolas', 'Courier New', monospace;
+  color: #fdba74;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.card-git-icon {
+  color: #f97316;
+}
+
+.mahi-project-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.mahi-project-path {
+  font-size: 11px;
+  color: #526685;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
+  font-family: 'JetBrains Mono', Consolas, monospace;
+}
+
+.mahi-project-activity {
+  font-size: 11px;
+  color: #526685;
+  margin-left: auto;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.mahi-project-card-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  row-gap: 6px;
+  margin-top: 2px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.mahi-card-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(15, 30, 56, 0.7);
+  border: 1px solid rgba(64, 128, 255, 0.16);
+  color: #8ea0bc;
+  font-size: 10.5px;
+  font-weight: 550;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 140ms ease;
+}
+
+.mahi-card-action-btn:hover {
+  background: rgba(47, 127, 255, 0.25);
+  border-color: #2f7fff;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.mahi-card-action-btn.vs-code {
+  color: #64b5f6;
+  border-color: rgba(0, 122, 204, 0.28);
+}
+
+.mahi-card-action-btn.vs-code:hover {
+  background: rgba(0, 122, 204, 0.35);
+  border-color: #007acc;
+  color: #ffffff;
+}
+
+.mahi-card-action-btn.dev-run {
+  color: #34d399;
+  border-color: rgba(16, 185, 129, 0.32);
+  background: rgba(16, 185, 129, 0.08);
+}
+
+.mahi-card-action-btn.dev-run:hover {
+  background: rgba(16, 185, 129, 0.25);
+  border-color: #10b981;
+  color: #ffffff;
+}
+
+.mahi-card-action-btn.workspace-btn {
+  color: #a78bfa;
+  border-color: rgba(139, 92, 246, 0.3);
+  background: rgba(139, 92, 246, 0.08);
+}
+
+.mahi-card-action-btn.workspace-btn:hover {
+  background: rgba(139, 92, 246, 0.25);
+  border-color: #8b5cf6;
+  color: #ffffff;
+}
+
+.mahi-project-top-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.mahi-card-pin-icon-btn {
+  background: transparent;
+  border: none;
+  color: #475569;
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 120ms ease;
+}
+
+.mahi-card-pin-icon-btn:hover {
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.1);
+}
+
+.mahi-card-pin-icon-btn.is-pinned {
+  color: #38bdf8;
+}
+
+.mahi-card-action-btn.pin-btn {
+  color: #94a3b8;
+}
+
+.mahi-card-action-btn.pin-btn.is-pinned {
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.3);
+  background: rgba(56, 189, 248, 0.08);
+}
+
+.mahi-card-action-btn.pin-btn:hover {
+  color: #ffffff;
+  border-color: #38bdf8;
+  background: rgba(56, 189, 248, 0.2);
+}
+
+
