@@ -1,4 +1,4 @@
-export type AccentPresetId = 'blue' | 'cyan' | 'purple' | 'green';
+export type AccentPresetId = 'blue' | 'cyan' | 'purple' | 'green' | 'custom';
 
 export interface AccentColorPreset {
   id: AccentPresetId;
@@ -17,12 +17,13 @@ export type GlowIntensity = 'off' | 'subtle' | 'vibrant';
 
 export interface AppearanceSettings {
   preset: AccentPresetId;
+  customColor?: string;
   glassIntensity: GlassIntensity;
   blurStrength: BlurStrength;
   glowIntensity: GlowIntensity;
 }
 
-export const ACCENT_PRESETS: Record<AccentPresetId, AccentColorPreset> = {
+export const ACCENT_PRESETS: Record<Exclude<AccentPresetId, 'custom'>, AccentColorPreset> = {
   blue: {
     id: 'blue',
     name: 'MAHI Blue',
@@ -67,21 +68,70 @@ export const ACCENT_PRESETS: Record<AccentPresetId, AccentColorPreset> = {
 
 export const DEFAULT_APPEARANCE: AppearanceSettings = {
   preset: 'blue',
+  customColor: undefined,
   glassIntensity: 'medium',
   blurStrength: 'standard',
   glowIntensity: 'subtle',
 };
 
+export function isValidHexColor(hex: string): boolean {
+  return /^#[0-9a-fA-F]{6}$/.test(hex.trim());
+}
+
+export function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
+  const clean = hex.trim();
+  if (!isValidHexColor(clean)) return null;
+  const num = parseInt(clean.slice(1), 16);
+  return {
+    r: (num >> 16) & 255,
+    g: (num >> 8) & 255,
+    b: num & 255,
+  };
+}
+
+export function generateCustomPreset(customColor: string): AccentColorPreset {
+  const rgb = hexToRgb(customColor) || { r: 47, g: 127, b: 255 };
+  const primary = isValidHexColor(customColor) ? customColor.toLowerCase() : '#2f7fff';
+  const hoverR = Math.max(0, Math.min(255, Math.round(rgb.r * 0.88)));
+  const hoverG = Math.max(0, Math.min(255, Math.round(rgb.g * 0.88)));
+  const hoverB = Math.max(0, Math.min(255, Math.round(rgb.b * 0.88)));
+  const hover = `#${hoverR.toString(16).padStart(2, '0')}${hoverG.toString(16).padStart(2, '0')}${hoverB.toString(16).padStart(2, '0')}`;
+
+  return {
+    id: 'custom',
+    name: 'Custom Accent',
+    primary,
+    hover,
+    glow: `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.24)`,
+    subtle: `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.12)`,
+    border: `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.35)`,
+    gradient: `linear-gradient(135deg, ${primary} 0%, rgba(${Math.min(255, rgb.r + 40)}, ${Math.min(255, rgb.g + 40)}, ${Math.min(255, rgb.b + 40)}, 1) 100%)`,
+  };
+}
+
+export function getPresetDefinition(settings: AppearanceSettings): AccentColorPreset {
+  if (settings.preset === 'custom' && settings.customColor && isValidHexColor(settings.customColor)) {
+    return generateCustomPreset(settings.customColor);
+  }
+  const key = settings.preset as Exclude<AccentPresetId, 'custom'>;
+  return ACCENT_PRESETS[key] || ACCENT_PRESETS.blue;
+}
+
 const STORAGE_KEY = 'mahi_appearance_settings_v1';
 
-export function loadAppearanceSettings(): AppearanceSettings {
+export function loadAppearanceFallback(): AppearanceSettings {
   if (typeof window === 'undefined') return DEFAULT_APPEARANCE;
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (!raw) return DEFAULT_APPEARANCE;
     const parsed = JSON.parse(raw);
+    const validPresets: AccentPresetId[] = ['blue', 'cyan', 'purple', 'green', 'custom'];
+    const preset = validPresets.includes(parsed.preset) ? parsed.preset : DEFAULT_APPEARANCE.preset;
+    const customColor = parsed.customColor && isValidHexColor(parsed.customColor) ? parsed.customColor : undefined;
+
     return {
-      preset: ACCENT_PRESETS[parsed.preset as AccentPresetId] ? parsed.preset : DEFAULT_APPEARANCE.preset,
+      preset: preset === 'custom' && !customColor ? 'blue' : preset,
+      customColor,
       glassIntensity: ['low', 'medium', 'high'].includes(parsed.glassIntensity)
         ? parsed.glassIntensity
         : DEFAULT_APPEARANCE.glassIntensity,
@@ -97,19 +147,19 @@ export function loadAppearanceSettings(): AppearanceSettings {
   }
 }
 
-export function saveAppearanceSettings(settings: AppearanceSettings): void {
+export function saveAppearanceFallback(settings: AppearanceSettings): void {
   if (typeof window === 'undefined') return;
   try {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
   } catch (e) {
-    console.warn('Failed to save appearance settings:', e);
+    console.warn('Failed to save appearance fallback:', e);
   }
 }
 
 export function applyAppearanceToDom(settings: AppearanceSettings): void {
   if (typeof document === 'undefined') return;
   const root = document.documentElement;
-  const preset = ACCENT_PRESETS[settings.preset] || ACCENT_PRESETS.blue;
+  const preset = getPresetDefinition(settings);
 
   // 1. Accent tokens
   root.style.setProperty('--mahi-accent-primary', preset.primary);

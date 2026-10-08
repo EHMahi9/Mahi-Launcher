@@ -16,6 +16,13 @@ vi.mock('../../services/tauriApi', () => ({
     recoveredMb: 100,
     message: 'Reclaimed 100 MB of disk space.',
   }),
+  getAppearanceSettings: vi.fn().mockResolvedValue({
+    preset: 'blue',
+    glassIntensity: 'medium',
+    blurStrength: 'standard',
+    glowIntensity: 'subtle',
+  }),
+  saveAppearanceSettings: vi.fn().mockImplementation(async (settings) => settings),
   isTauri: vi.fn().mockReturnValue(false),
 }));
 
@@ -173,6 +180,16 @@ describe('Phase 18 — SettingsModal & Help View', () => {
     const highIntensityBtn = screen.getByRole('button', { name: 'High' });
     fireEvent.click(highIntensityBtn);
     expect(highIntensityBtn).toHaveClass('active');
+
+    // Test Custom Accent Color input
+    expect(screen.getByText('Custom Accent Color')).toBeInTheDocument();
+    const hexInput = screen.getByLabelText('Custom hex color code');
+    fireEvent.change(hexInput, { target: { value: '#e11d48' } });
+    const setAccentBtn = screen.getByTitle('Apply custom accent');
+    fireEvent.click(setAccentBtn);
+
+    expect(document.documentElement.style.getPropertyValue('--mahi-accent-primary')).toBe('#e11d48');
+    expect(screen.getByText('Active')).toBeInTheDocument();
 
     // Reset to MAHI default
     const resetBtn = screen.getByRole('button', { name: /Reset to MAHI Default/i });

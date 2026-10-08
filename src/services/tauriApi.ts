@@ -22,6 +22,12 @@ import {
   WorkstationFindingsReport,
   WorkstationIntelligenceSummary,
 } from '../types/intelligence';
+import {
+  AppearanceSettings,
+  DEFAULT_APPEARANCE,
+  loadAppearanceFallback,
+  saveAppearanceFallback,
+} from '../types/appearance';
 
 // In-memory session cache for project intelligence
 const projectDetailsCache = new Map<string, ProjectDetails>();
@@ -260,6 +266,34 @@ export async function setOnboardingState(state: OnboardingState): Promise<Onboar
     return state;
   }
   return await invoke<OnboardingState>('set_onboarding_state', { state });
+}
+
+export async function getAppearanceSettings(): Promise<AppearanceSettings> {
+  if (!isTauri()) {
+    return loadAppearanceFallback();
+  }
+  try {
+    return await invoke<AppearanceSettings>('get_appearance_settings');
+  } catch (err) {
+    console.warn('Native get_appearance_settings failed, falling back to defaults:', err);
+    return DEFAULT_APPEARANCE;
+  }
+}
+
+export async function saveAppearanceSettings(settings: AppearanceSettings): Promise<AppearanceSettings> {
+  if (!isTauri()) {
+    saveAppearanceFallback(settings);
+    return settings;
+  }
+  try {
+    const saved = await invoke<AppearanceSettings>('set_appearance_settings', { settings });
+    saveAppearanceFallback(saved);
+    return saved;
+  } catch (err) {
+    console.warn('Native set_appearance_settings failed, saving to local fallback:', err);
+    saveAppearanceFallback(settings);
+    return settings;
+  }
 }
 
 export async function openPath(path: string): Promise<void> {

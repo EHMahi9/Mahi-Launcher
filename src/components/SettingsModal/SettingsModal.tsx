@@ -20,17 +20,21 @@ import {
   RotateCcw
 } from 'lucide-react';
 import { DebugStorageInfo, CleanStorageResult } from '../../types/project';
-import { getDebugStorageInfo, cleanDebugArtifacts } from '../../services/tauriApi';
+import { 
+  getDebugStorageInfo, 
+  cleanDebugArtifacts,
+  getAppearanceSettings,
+  saveAppearanceSettings
+} from '../../services/tauriApi';
 import {
   AppearanceSettings,
-  AccentPresetId,
   GlassIntensity,
   BlurStrength,
   GlowIntensity,
   ACCENT_PRESETS,
   DEFAULT_APPEARANCE,
-  loadAppearanceSettings,
-  saveAppearanceSettings,
+  isValidHexColor,
+  loadAppearanceFallback,
   applyAppearanceToDom
 } from '../../types/appearance';
 import './SettingsModal.css';
@@ -64,6 +68,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 }) => {
   const [activeTab, setActiveTab] = useState<SettingsTabId>(initialTab);
   const [appearance, setAppearance] = useState<AppearanceSettings>(DEFAULT_APPEARANCE);
+  const [customColorInput, setCustomColorInput] = useState<string>('#2f7fff');
+  const [customColorError, setCustomColorError] = useState<string | null>(null);
   const [storageInfo, setStorageInfo] = useState<DebugStorageInfo | null>(null);
   const [loading, setLoading] = useState(false);
   const [cleaning, setCleaning] = useState(false);
@@ -90,7 +96,22 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
       setActiveTab(initialTab);
       setCleanResult(null);
       setConfirmPrompt(false);
-      setAppearance(loadAppearanceSettings());
+      setCustomColorError(null);
+
+      // Immediate fallback
+      const cached = loadAppearanceFallback();
+      setAppearance(cached);
+      setCustomColorInput(cached.customColor || '#2f7fff');
+
+      // Authoritative native AppData load
+      getAppearanceSettings().then((nativeSettings) => {
+        setAppearance(nativeSettings);
+        applyAppearanceToDom(nativeSettings);
+        if (nativeSettings.customColor) {
+          setCustomColorInput(nativeSettings.customColor);
+        }
+      }).catch(() => {});
+
       fetchStorageInfo();
     }
   }, [isOpen, initialTab]);
@@ -101,13 +122,45 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
     const next: AppearanceSettings = { ...appearance, ...partial };
     setAppearance(next);
     applyAppearanceToDom(next);
-    saveAppearanceSettings(next);
+    saveAppearanceSettings(next).catch((err) => {
+      console.warn('Native appearance save error:', err);
+    });
   };
 
   const handleResetAppearance = () => {
     setAppearance(DEFAULT_APPEARANCE);
+    setCustomColorInput('#2f7fff');
+    setCustomColorError(null);
     applyAppearanceToDom(DEFAULT_APPEARANCE);
-    saveAppearanceSettings(DEFAULT_APPEARANCE);
+    saveAppearanceSettings(DEFAULT_APPEARANCE).catch((err) => {
+      console.warn('Native appearance reset error:', err);
+    });
+  };
+
+  const handleApplyCustomHex = (hex: string) => {
+    let clean = hex.trim();
+    if (!clean.startsWith('#')) {
+      clean = `#${clean}`;
+    }
+    setCustomColorInput(clean);
+    if (isValidHexColor(clean)) {
+      setCustomColorError(null);
+      handleUpdateAppearance({
+        preset: 'custom',
+        customColor: clean.toLowerCase(),
+      });
+    } else {
+      setCustomColorError('Enter valid 6-char hex code (e.g. #3b82f6)');
+    }
+  };
+
+  const handleNativeColorPickerChange = (color: string) => {
+    setCustomColorInput(color.toLowerCase());
+    setCustomColorError(null);
+    handleUpdateAppearance({
+      preset: 'custom',
+      customColor: color.toLowerCase(),
+    });
   };
 
   const handleClean = async () => {
@@ -320,7 +373,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 </p>
 
                 <div className="mahi-appearance-presets-grid">
-                  {(Object.keys(ACCENT_PRESETS) as AccentPresetId[]).map((presetKey) => {
+                  {(['blue', 'cyan', 'purple', 'green'] as const).map((presetKey) => {
                     const p = ACCENT_PRESETS[presetKey];
                     const isSelected = appearance.preset === presetKey;
                     return (
@@ -328,7 +381,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                         key={presetKey}
                         type="button"
                         className={`mahi-preset-btn ${isSelected ? 'active' : ''}`}
-                        onClick={() => handleUpdateAppearance({ preset: presetKey })}
+                        onClick={() => {
+                          setCustomColorError(null);
+                          handleUpdateAppearance({ preset: presetKey });
+                        }}
                       >
                         <span 
                           className="mahi-preset-dot" 
@@ -338,6 +394,76 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                       </button>
                     );
                   })}
+                </div>
+
+                {/* Custom Accent Color Control */}
+                <div className="mahi-appearance-custom-row">
+                  <div className="mahi-setting-meta">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span className="mahi-setting-title">Custom Accent Color</span>
+                      {appearance.preset === 'custom' && (
+                        <span className="mahi-preview-badge" style={{ fontSize: '10px', padding: '1px 6px' }}>
+                          Active
+                        </span>
+                      )}
+                    </div>
+                    <div className="mahi-setting-desc">
+                      Choose any custom hex color or pick from the palette.
+                    </div>
+                    {customColorError && (
+                      <div style={{ color: '#f87171', fontSize: '11px', marginTop: '2px' }}>
+                        {customColorError}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="mahi-custom-picker-group">
+                    <div 
+                      className="mahi-color-input-wrapper" 
+                      title="Open color picker"
+                      style={{
+                        borderColor: appearance.preset === 'custom' ? 'var(--mahi-accent-primary)' : undefined,
+                        boxShadow: appearance.preset === 'custom' ? '0 0 10px var(--mahi-accent-glow)' : undefined
+                      }}
+                    >
+                      <input 
+                        type="color" 
+                        className="mahi-color-input-hidden"
+                        value={appearance.customColor || customColorInput || '#2f7fff'}
+                        onChange={(e) => handleNativeColorPickerChange(e.target.value)}
+                        aria-label="Custom color picker"
+                      />
+                      <div 
+                        className="mahi-color-swatch-preview"
+                        style={{ backgroundColor: appearance.customColor || customColorInput || '#2f7fff' }}
+                      />
+                    </div>
+
+                    <input 
+                      type="text" 
+                      className="mahi-hex-text-input"
+                      value={customColorInput}
+                      onChange={(e) => setCustomColorInput(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          handleApplyCustomHex(customColorInput);
+                        }
+                      }}
+                      onBlur={() => handleApplyCustomHex(customColorInput)}
+                      placeholder="#2f7fff"
+                      maxLength={7}
+                      aria-label="Custom hex color code"
+                    />
+
+                    <button
+                      type="button"
+                      className="mahi-hex-apply-btn"
+                      onClick={() => handleApplyCustomHex(customColorInput)}
+                      title="Apply custom accent"
+                    >
+                      Set Accent
+                    </button>
+                  </div>
                 </div>
               </div>
 

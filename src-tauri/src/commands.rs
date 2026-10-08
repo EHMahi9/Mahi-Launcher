@@ -1458,6 +1458,96 @@ pub fn set_onboarding_state(app: AppHandle, state: OnboardingState) -> Result<On
     Ok(state)
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct AppearanceSettings {
+    pub preset: String,
+    #[serde(rename = "customColor", default, skip_serializing_if = "Option::is_none")]
+    pub custom_color: Option<String>,
+    #[serde(rename = "glassIntensity", default = "default_glass_intensity")]
+    pub glass_intensity: String,
+    #[serde(rename = "blurStrength", default = "default_blur_strength")]
+    pub blur_strength: String,
+    #[serde(rename = "glowIntensity", default = "default_glow_intensity")]
+    pub glow_intensity: String,
+}
+
+fn default_glass_intensity() -> String {
+    "medium".to_string()
+}
+fn default_blur_strength() -> String {
+    "standard".to_string()
+}
+fn default_glow_intensity() -> String {
+    "subtle".to_string()
+}
+
+impl Default for AppearanceSettings {
+    fn default() -> Self {
+        Self {
+            preset: "blue".to_string(),
+            custom_color: None,
+            glass_intensity: "medium".to_string(),
+            blur_strength: "standard".to_string(),
+            glow_intensity: "subtle".to_string(),
+        }
+    }
+}
+
+impl AppearanceSettings {
+    pub fn sanitize(&mut self) {
+        if !["blue", "cyan", "purple", "green", "custom"].contains(&self.preset.as_str()) {
+            self.preset = "blue".to_string();
+        }
+        if !["low", "medium", "high"].contains(&self.glass_intensity.as_str()) {
+            self.glass_intensity = "medium".to_string();
+        }
+        if !["subtle", "standard", "deep"].contains(&self.blur_strength.as_str()) {
+            self.blur_strength = "standard".to_string();
+        }
+        if !["off", "subtle", "vibrant"].contains(&self.glow_intensity.as_str()) {
+            self.glow_intensity = "subtle".to_string();
+        }
+        if let Some(ref color) = self.custom_color {
+            let is_valid_hex = color.starts_with('#')
+                && color.len() == 7
+                && color[1..].chars().all(|c| c.is_ascii_hexdigit());
+            if !is_valid_hex {
+                self.custom_color = None;
+                if self.preset == "custom" {
+                    self.preset = "blue".to_string();
+                }
+            }
+        } else if self.preset == "custom" {
+            self.preset = "blue".to_string();
+        }
+    }
+}
+
+#[tauri::command]
+pub fn get_appearance_settings(app: AppHandle) -> Result<AppearanceSettings, String> {
+    let file = get_app_data_file_path(&app, "appearance.json")?;
+    if file.exists() {
+        let data = fs::read_to_string(&file)
+            .map_err(|e| format!("Failed to read appearance.json: {}", e))?;
+        let mut settings: AppearanceSettings = serde_json::from_str(&data).unwrap_or_default();
+        settings.sanitize();
+        Ok(settings)
+    } else {
+        Ok(AppearanceSettings::default())
+    }
+}
+
+#[tauri::command]
+pub fn set_appearance_settings(app: AppHandle, mut settings: AppearanceSettings) -> Result<AppearanceSettings, String> {
+    settings.sanitize();
+    let file = get_app_data_file_path(&app, "appearance.json")?;
+    let json = serde_json::to_string_pretty(&settings)
+        .map_err(|e| format!("Failed to serialize appearance settings: {}", e))?;
+    fs::write(&file, json)
+        .map_err(|e| format!("Failed to write appearance.json: {}", e))?;
+    Ok(settings)
+}
+
 #[tauri::command]
 pub fn get_project_details(app: AppHandle, path: String) -> Result<ProjectDetails, String> {
     let p = Path::new(&path);
@@ -4738,6 +4828,63 @@ serde = { version = "1", features = ["derive"] }
         // Safe normal path should pass non-destructive check
         let safe_path = Path::new("D:\\Code\\my-app\\src\\App.tsx");
         assert!(validate_path_security(safe_path, false).is_ok());
+    }
+
+    #[test]
+    fn test_appearance_settings_sanitization_and_persistence() {
+        // 1. Default settings
+        let mut def = AppearanceSettings::default();
+        assert_eq!(def.preset, "blue");
+        assert_eq!(def.custom_color, None);
+        assert_eq!(def.glass_intensity, "medium");
+        assert_eq!(def.blur_strength, "standard");
+        assert_eq!(def.glow_intensity, "subtle");
+        def.sanitize();
+        assert_eq!(def.preset, "blue");
+
+        // 2. Custom valid color sanitization
+        let mut custom = AppearanceSettings {
+            preset: "custom".to_string(),
+            custom_color: Some("#3b82f6".to_string()),
+            glass_intensity: "high".to_string(),
+            blur_strength: "deep".to_string(),
+            glow_intensity: "vibrant".to_string(),
+        };
+        custom.sanitize();
+        assert_eq!(custom.preset, "custom");
+        assert_eq!(custom.custom_color, Some("#3b82f6".to_string()));
+
+        // 3. Custom invalid color sanitization (must revert to blue and None)
+        let mut invalid_custom = AppearanceSettings {
+            preset: "custom".to_string(),
+            custom_color: Some("not-a-color".to_string()),
+            glass_intensity: "super-extreme".to_string(),
+            blur_strength: "ultra-blur".to_string(),
+            glow_intensity: "mega-glow".to_string(),
+        };
+        invalid_custom.sanitize();
+        assert_eq!(invalid_custom.preset, "blue");
+        assert_eq!(invalid_custom.custom_color, None);
+        assert_eq!(invalid_custom.glass_intensity, "medium");
+        assert_eq!(invalid_custom.blur_strength, "standard");
+        assert_eq!(invalid_custom.glow_intensity, "subtle");
+
+        // 4. Persistence round-trip
+        let temp_dir = std::env::temp_dir().join(format!("mahi_appearance_test_{}", std::process::id()));
+        if temp_dir.exists() {
+            let _ = fs::remove_dir_all(&temp_dir);
+        }
+        fs::create_dir_all(&temp_dir).expect("create temp dir");
+        let file = temp_dir.join("appearance.json");
+
+        let serialized = serde_json::to_string_pretty(&custom).expect("serialize");
+        fs::write(&file, serialized).expect("write file");
+
+        let read_back = fs::read_to_string(&file).expect("read file");
+        let deserialized: AppearanceSettings = serde_json::from_str(&read_back).expect("deserialize");
+        assert_eq!(deserialized, custom);
+
+        let _ = fs::remove_dir_all(&temp_dir);
     }
 }
 

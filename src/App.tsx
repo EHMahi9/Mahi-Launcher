@@ -97,10 +97,11 @@ import {
   setOnboardingState,
   getWorkstationIntelligenceSummary,
   listWorkspaceProcesses,
-  stopWorkspaceProcess
+  stopWorkspaceProcess,
+  getAppearanceSettings
 } from './services/tauriApi';
 import { WorkstationIntelligenceSummary } from './types/intelligence';
-import { loadAppearanceSettings, applyAppearanceToDom } from './types/appearance';
+import { loadAppearanceFallback, applyAppearanceToDom } from './types/appearance';
 import './App.css';
 
 function App() {
@@ -568,9 +569,14 @@ function App() {
   };
 
   useEffect(() => {
-    // Initialize appearance settings on DOM
-    const initialAppearance = loadAppearanceSettings();
-    applyAppearanceToDom(initialAppearance);
+    // Immediate fallback for no-flicker render
+    const cachedAppearance = loadAppearanceFallback();
+    applyAppearanceToDom(cachedAppearance);
+
+    // Authoritative native AppData load
+    getAppearanceSettings().then((nativeSettings) => {
+      applyAppearanceToDom(nativeSettings);
+    }).catch(() => {});
 
     loadData();
 

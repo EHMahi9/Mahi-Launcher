@@ -58,6 +58,8 @@ pub fn run() {
             commands::pick_scan_root,
             commands::get_onboarding_state,
             commands::set_onboarding_state,
+            commands::get_appearance_settings,
+            commands::set_appearance_settings,
             commands::get_project_details,
             commands::get_git_status,
             commands::open_path,

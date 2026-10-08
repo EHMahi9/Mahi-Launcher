@@ -616,6 +616,94 @@
   flex-shrink: 0;
 }
 
+.mahi-appearance-custom-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  background: var(--mahi-glass-elevated);
+  border: 1px solid var(--mahi-glass-border);
+  box-shadow: inset 0 1px 0 var(--mahi-glass-highlight);
+  border-radius: 8px;
+  margin-top: 10px;
+  backdrop-filter: blur(var(--mahi-glass-blur));
+  -webkit-backdrop-filter: blur(var(--mahi-glass-blur));
+}
+
+.mahi-custom-picker-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mahi-color-input-wrapper {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--mahi-glass-border);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.mahi-color-input-hidden {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  opacity: 0;
+}
+
+.mahi-color-swatch-preview {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  pointer-events: none;
+}
+
+.mahi-hex-text-input {
+  width: 96px;
+  padding: 5px 8px;
+  background: rgba(6, 14, 26, 0.7);
+  border: 1px solid var(--mahi-glass-border);
+  border-radius: 6px;
+  color: #f1f5f9;
+  font-family: 'Cascadia Code', Consolas, monospace;
+  font-size: 12px;
+  outline: none;
+  transition: all 130ms ease;
+}
+
+.mahi-hex-text-input:focus {
+  border-color: var(--mahi-accent-primary);
+  box-shadow: 0 0 10px var(--mahi-accent-glow);
+}
+
+.mahi-hex-apply-btn {
+  padding: 5px 10px;
+  background: var(--mahi-accent-subtle);
+  border: 1px solid var(--mahi-accent-border);
+  border-radius: 6px;
+  color: var(--mahi-accent-primary);
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 130ms ease;
+}
+
+.mahi-hex-apply-btn:hover {
+  background: var(--mahi-accent-primary);
+  color: #ffffff;
+  box-shadow: 0 0 10px var(--mahi-accent-glow);
+}
+
 .mahi-appearance-setting-row {
   display: flex;
   align-items: center;
