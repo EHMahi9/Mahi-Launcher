@@ -296,6 +296,98 @@ export async function saveAppearanceSettings(settings: AppearanceSettings): Prom
   }
 }
 
+// =========================================================================
+// Startup & Progressive Hydration Cache Helpers
+// =========================================================================
+
+const PROJECTS_CACHE_KEY = 'mahi_cached_projects_v1';
+const RECENT_CACHE_KEY = 'mahi_cached_recent_v1';
+const PINNED_CACHE_KEY = 'mahi_cached_pinned_v1';
+const WI_CACHE_KEY = 'mahi_cached_wi_v1';
+
+export async function recordStartupMetrics(metrics: Record<string, number | string | boolean>): Promise<void> {
+  if (isTauri()) {
+    try {
+      await invoke('record_startup_metrics', { metrics });
+    } catch {
+      // non-fatal
+    }
+  }
+}
+
+export function loadCachedProjects(): ProjectInfo[] {
+  if (typeof window === 'undefined') return [];
+  try {
+    const raw = window.localStorage.getItem(PROJECTS_CACHE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+export function saveCachedProjects(projects: ProjectInfo[]): void {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.setItem(PROJECTS_CACHE_KEY, JSON.stringify(projects.slice(0, 100)));
+  } catch {}
+}
+
+export function loadCachedRecentProjects(): RecentProjectEntry[] {
+  if (typeof window === 'undefined') return [];
+  try {
+    const raw = window.localStorage.getItem(RECENT_CACHE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+export function saveCachedRecentProjects(recents: RecentProjectEntry[]): void {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.setItem(RECENT_CACHE_KEY, JSON.stringify(recents.slice(0, 20)));
+  } catch {}
+}
+
+export function loadCachedPinnedProjects(): PinnedProjectEntry[] {
+  if (typeof window === 'undefined') return [];
+  try {
+    const raw = window.localStorage.getItem(PINNED_CACHE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+export function saveCachedPinnedProjects(pinned: PinnedProjectEntry[]): void {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.setItem(PINNED_CACHE_KEY, JSON.stringify(pinned));
+  } catch {}
+}
+
+export function loadCachedWorkstationSummary(): WorkstationIntelligenceSummary | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    const raw = window.localStorage.getItem(WI_CACHE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+export function saveCachedWorkstationSummary(summary: WorkstationIntelligenceSummary | null): void {
+  if (typeof window === 'undefined') return;
+  try {
+    if (summary) {
+      window.localStorage.setItem(WI_CACHE_KEY, JSON.stringify(summary));
+    } else {
+      window.localStorage.removeItem(WI_CACHE_KEY);
+    }
+  } catch {}
+}
+
+
 export async function openPath(path: string): Promise<void> {
   if (!isTauri()) {
     console.log('[Dev] openPath called for:', path);

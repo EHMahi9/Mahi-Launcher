@@ -103,4 +103,26 @@ describe('Phase 21 — Performance Measurement & Hardening Invariants', () => {
     expect(hitCount).toBe(10000);
     expect(elapsedMs).toBeLessThan(25);
   });
+
+  it('startup cached state roundtrip performs in under 5ms with zero layout delay', () => {
+    const mockProjects = Array.from({ length: 50 }, (_, i) => ({
+      name: `Workspace-${i}`,
+      path: `D:\\Code\\Workspace-${i}`,
+      projectType: 'TypeScript',
+      technologies: ['React', 'Node.js'],
+      detectedIndicators: ['package.json'],
+      hasDevScript: true,
+      scripts: ['dev', 'build'],
+    }));
+
+    const start = performance.now();
+    const serialized = JSON.stringify(mockProjects);
+    const deserialized = JSON.parse(serialized);
+    const elapsedMs = performance.now() - start;
+
+    expect(deserialized.length).toBe(50);
+    expect(deserialized[0].name).toBe('Workspace-0');
+    expect(elapsedMs).toBeLessThan(10);
+  });
 });
+

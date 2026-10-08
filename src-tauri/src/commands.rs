@@ -1549,6 +1549,16 @@ pub fn set_appearance_settings(app: AppHandle, mut settings: AppearanceSettings)
 }
 
 #[tauri::command]
+pub fn record_startup_metrics(app: AppHandle, metrics: serde_json::Value) -> Result<(), String> {
+    let file = get_app_data_file_path(&app, "startup_metrics.json")?;
+    let json = serde_json::to_string_pretty(&metrics)
+        .map_err(|e| format!("Failed to serialize startup metrics: {}", e))?;
+    fs::write(&file, json)
+        .map_err(|e| format!("Failed to write startup_metrics.json: {}", e))?;
+    Ok(())
+}
+
+#[tauri::command]
 pub fn get_project_details(app: AppHandle, path: String) -> Result<ProjectDetails, String> {
     let p = Path::new(&path);
     if !p.is_dir() {

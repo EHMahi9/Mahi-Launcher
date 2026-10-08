@@ -98,7 +98,16 @@ import {
   getWorkstationIntelligenceSummary,
   listWorkspaceProcesses,
   stopWorkspaceProcess,
-  getAppearanceSettings
+  getAppearanceSettings,
+  recordStartupMetrics,
+  loadCachedProjects,
+  saveCachedProjects,
+  loadCachedRecentProjects,
+  saveCachedRecentProjects,
+  loadCachedPinnedProjects,
+  saveCachedPinnedProjects,
+  loadCachedWorkstationSummary,
+  saveCachedWorkstationSummary,
 } from './services/tauriApi';
 import { WorkstationIntelligenceSummary } from './types/intelligence';
 import { loadAppearanceFallback, applyAppearanceToDom } from './types/appearance';
@@ -110,9 +119,9 @@ function App() {
   const [developerHealthIntent, setDeveloperHealthIntent] = useState<Partial<Pick<SafeActionNavigationIntent, 'tab' | 'projectPath' | 'targetId'>>>({});
   const [previousNav, setPreviousNav] = useState('home');
   const [searchQuery, setSearchQuery] = useState('');
-  const [projects, setProjects] = useState<ProjectInfo[]>([]);
-  const [recentProjects, setRecentProjects] = useState<RecentProjectEntry[]>([]);
-  const [pinnedProjects, setPinnedProjects] = useState<PinnedProjectEntry[]>([]);
+  const [projects, setProjects] = useState<ProjectInfo[]>(() => loadCachedProjects());
+  const [recentProjects, setRecentProjects] = useState<RecentProjectEntry[]>(() => loadCachedRecentProjects());
+  const [pinnedProjects, setPinnedProjects] = useState<PinnedProjectEntry[]>(() => loadCachedPinnedProjects());
   const [configuredRoots, setConfiguredRoots] = useState<string[]>([]);
   const [onboardingState, setOnboardingStateData] = useState<OnboardingState>({
     completed: false,
@@ -121,7 +130,7 @@ function App() {
   });
   const [runningProcesses, setRunningProcesses] = useState<ProjectProcessInfo[]>([]);
   const [debugStorage, setDebugStorage] = useState<DebugStorageInfo | null>(null);
-  const [workstationSummary, setWorkstationSummary] = useState<WorkstationIntelligenceSummary | null>(null);
+  const [workstationSummary, setWorkstationSummary] = useState<WorkstationIntelligenceSummary | null>(() => loadCachedWorkstationSummary());
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [settingsInitialTab, setSettingsInitialTab] = useState<'locations' | 'appearance' | 'maintenance' | 'help'>('locations');
   const [loading, setLoading] = useState(false);
@@ -437,46 +446,86 @@ function App() {
     }
   }, []);
 
-  const loadData = useCallback(async () => {
+  // Progressive hydration: Stage 1 (Fast Critical Path — < 15ms)
+  const loadCriticalData = useCallback(async () => {
+    try {
+      const [recent, pinned, roots, onboarding, drivesData, locations] = await Promise.all([
+        getRecentProjects().catch(() => [] as RecentProjectEntry[]),
+        getPinnedProjects().catch(() => [] as PinnedProjectEntry[]),
+        getScanRoots().catch(() => [] as string[]),
+        getOnboardingState().catch(() => ({ completed: false, dismissed: false, completedAt: null })),
+        getDrives().catch(() => [] as DriveInfo[]),
+        getUserLocations().catch(() => null),
+      ]);
+
+      setRecentProjects(recent);
+      saveCachedRecentProjects(recent);
+
+      setPinnedProjects(pinned);
+      saveCachedPinnedProjects(pinned);
+
+      setConfiguredRoots(roots);
+      setOnboardingStateData(onboarding);
+      setDrives(drivesData);
+      setUserLocations(locations);
+
+      return { roots, onboarding };
+    } catch (err) {
+      console.warn('Non-fatal error in critical data load:', err);
+      return null;
+    }
+  }, []);
+
+  // Progressive hydration: Stage 2 (Background Project Discovery)
+  const loadProjectsAsync = useCallback(async () => {
     setLoading(true);
     const start = performance.now();
     try {
-      const [discovered, recent, pinned, drivesData, locations, procs, storageInfo, roots, onboarding, wiSummary] = await Promise.all([
-        discoverProjects(),
-        getRecentProjects(),
-        getPinnedProjects(),
-        getDrives(),
-        getUserLocations(),
-        getRunningProcesses().catch(() => [] as ProjectProcessInfo[]),
-        getDebugStorageInfo().catch(() => null),
-        getScanRoots().catch(() => [] as string[]),
-        getOnboardingState().catch(() => ({ completed: false, dismissed: false, completedAt: null })),
-        getWorkstationIntelligenceSummary().catch(() => null),
-      ]);
+      const discovered = await discoverProjects();
       const duration = Math.round(performance.now() - start);
       setLatencyMs(Math.max(duration, 1));
       setProjects(discovered);
-      setRecentProjects(recent);
-      setPinnedProjects(pinned);
-      setDrives(drivesData);
-      setUserLocations(locations);
-      setRunningProcesses(procs);
-      setDebugStorage(storageInfo);
-      setConfiguredRoots(roots);
-      setOnboardingStateData(onboarding);
-      setWorkstationSummary(wiSummary);
-      // Fetch storage intelligence in background
-      loadStorage(false);
+      saveCachedProjects(discovered);
+      return discovered;
     } catch (err) {
-      console.error('Failed to load initial data:', err);
-      setToast({
-        type: 'warning',
-        message: 'Could not synchronize some workspace sources. Click refresh to retry.',
-      });
+      console.error('Failed to discover projects:', err);
+      return [];
     } finally {
       setLoading(false);
     }
+  }, []);
+
+  // Progressive hydration: Stage 3 (Deferred Intelligence & Diagnostics)
+  const loadDeferredIntelligence = useCallback(async () => {
+    try {
+      const [wiSummary, storageInfo, procs] = await Promise.all([
+        getWorkstationIntelligenceSummary().catch(() => null),
+        getDebugStorageInfo().catch(() => null),
+        getRunningProcesses().catch(() => [] as ProjectProcessInfo[]),
+      ]);
+
+      if (wiSummary) {
+        setWorkstationSummary(wiSummary);
+        saveCachedWorkstationSummary(wiSummary);
+      }
+      setDebugStorage(storageInfo);
+      setRunningProcesses(procs);
+
+      // Background storage inspection (non-blocking)
+      loadStorage(false);
+    } catch (err) {
+      console.warn('Non-fatal error loading deferred intelligence:', err);
+    }
   }, [loadStorage]);
+
+  // Full refresh action (used on manual refresh or settings updates)
+  const loadData = useCallback(async () => {
+    await Promise.all([
+      loadCriticalData(),
+      loadProjectsAsync(),
+      loadDeferredIntelligence(),
+    ]);
+  }, [loadCriticalData, loadProjectsAsync, loadDeferredIntelligence]);
 
   const handleAddProjectFolder = async () => {
     try {
@@ -503,6 +552,7 @@ function App() {
       // Discover and update projects
       const refreshedProjects = await discoverProjects();
       setProjects(refreshedProjects);
+      saveCachedProjects(refreshedProjects);
       if (refreshedProjects.length > 0) {
         const completedOnboarding = { completed: true, dismissed: true, completedAt: Date.now() };
         await setOnboardingState(completedOnboarding);
@@ -569,7 +619,9 @@ function App() {
   };
 
   useEffect(() => {
-    // Immediate fallback for no-flicker render
+    const tShell = performance.now();
+
+    // 1. Instant fallback appearance for zero-flash render
     const cachedAppearance = loadAppearanceFallback();
     applyAppearanceToDom(cachedAppearance);
 
@@ -578,7 +630,45 @@ function App() {
       applyAppearanceToDom(nativeSettings);
     }).catch(() => {});
 
-    loadData();
+    // 2. Stage 1: Load fast critical state immediately (< 15ms)
+    loadCriticalData().then(() => {
+      const tStage1 = performance.now();
+      recordStartupMetrics({
+        shellMountedMs: Math.round(tShell),
+        stage1InteractiveMs: Math.round(tStage1),
+        projectsHydratedMs: 0,
+        allHydratedMs: 0,
+        status: 'stage1_ready',
+      });
+
+      // 3. Stage 2: Kick off asynchronous project discovery without blocking the shell
+      loadProjectsAsync().then((discovered) => {
+        const tStage2 = performance.now();
+        recordStartupMetrics({
+          shellMountedMs: Math.round(tShell),
+          stage1InteractiveMs: Math.round(tStage1),
+          projectsHydratedMs: Math.round(tStage2),
+          allHydratedMs: 0,
+          projectsCount: (discovered || []).length,
+          status: 'projects_hydrated',
+        });
+
+        // 4. Stage 3: Defer heavy workstation intelligence and diagnostics
+        setTimeout(() => {
+          loadDeferredIntelligence().then(() => {
+            const tComplete = performance.now();
+            recordStartupMetrics({
+              shellMountedMs: Math.round(tShell),
+              stage1InteractiveMs: Math.round(tStage1),
+              projectsHydratedMs: Math.round(tStage2),
+              allHydratedMs: Math.round(tComplete),
+              projectsCount: (discovered || []).length,
+              status: 'fully_hydrated',
+            });
+          });
+        }, 300);
+      });
+    });
 
     let unlisten: (() => void) | undefined;
     onFocusSearchShortcut(() => {
@@ -593,7 +683,7 @@ function App() {
     return () => {
       unlisten?.();
     };
-  }, [loadData]);
+  }, [loadCriticalData, loadProjectsAsync, loadDeferredIntelligence]);
 
   // Synchronize running processes whenever active processes exist
   useEffect(() => {

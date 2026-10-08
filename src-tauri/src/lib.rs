@@ -60,6 +60,7 @@ pub fn run() {
             commands::set_onboarding_state,
             commands::get_appearance_settings,
             commands::set_appearance_settings,
+            commands::record_startup_metrics,
             commands::get_project_details,
             commands::get_git_status,
             commands::open_path,
