@@ -36,12 +36,27 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(64, 128, 255, 0.16);
+  background: rgba(64, 128, 255, 0.18);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(64, 150, 255, 0.32);
+  background: rgba(64, 150, 255, 0.38);
+}
+
+/* Accessibility: Consistent Fluent Focus Rings */
+:focus-visible {
+  outline: 2px solid rgba(64, 150, 255, 0.7);
+  outline-offset: 2px;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid rgba(64, 150, 255, 0.75);
+  outline-offset: 2px;
 }
 
 /* App Root Container */
