@@ -147,4 +147,38 @@ describe('Phase 18 — SettingsModal & Help View', () => {
     fireEvent.click(devBtn);
     expect(onOpenDeveloperHealth).toHaveBeenCalled();
   });
+
+  it('switches to Appearance tab and toggles presets and settings', () => {
+    render(
+      <SettingsModal
+        isOpen={true}
+        onClose={vi.fn()}
+        initialTab="appearance"
+      />
+    );
+
+    expect(screen.getByRole('tab', { name: /Appearance/i })).toHaveClass('active');
+    expect(screen.getByText('Accent Color Theme')).toBeInTheDocument();
+    expect(screen.getByText('Glass Surface Intensity')).toBeInTheDocument();
+    expect(screen.getByText('Backdrop Blur Strength')).toBeInTheDocument();
+    expect(screen.getByText('Luminous Glow Highlight')).toBeInTheDocument();
+
+    // Select Cyan preset
+    const cyanBtn = screen.getByText('Cyan');
+    fireEvent.click(cyanBtn);
+    expect(cyanBtn.closest('button')).toHaveClass('active');
+    expect(document.documentElement.style.getPropertyValue('--mahi-accent-primary')).toBe('#00d2ff');
+
+    // Select High glass intensity
+    const highIntensityBtn = screen.getByRole('button', { name: 'High' });
+    fireEvent.click(highIntensityBtn);
+    expect(highIntensityBtn).toHaveClass('active');
+
+    // Reset to MAHI default
+    const resetBtn = screen.getByRole('button', { name: /Reset to MAHI Default/i });
+    fireEvent.click(resetBtn);
+    expect(screen.getByText('MAHI Blue').closest('button')).toHaveClass('active');
+    expect(document.documentElement.style.getPropertyValue('--mahi-accent-primary')).toBe('#2f7fff');
+  });
 });
+

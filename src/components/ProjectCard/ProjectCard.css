@@ -1,6 +1,6 @@
 .mahi-project-card {
-  background: rgba(10, 22, 40, 0.65);
-  border: 1px solid rgba(64, 128, 255, 0.14);
+  background: var(--mahi-glass-elevated, rgba(10, 22, 40, 0.65));
+  border: 1px solid var(--mahi-glass-border, rgba(64, 128, 255, 0.14));
   border-radius: 12px;
   padding: 16px;
   display: flex;
@@ -11,8 +11,9 @@
   position: relative;
   overflow: hidden;
   transition: all 180ms ease-out;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25), inset 0 1px 0 var(--mahi-glass-highlight, rgba(255, 255, 255, 0.06));
 }
 
 .mahi-project-card::before {
@@ -22,16 +23,16 @@
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(64, 160, 255, 0.3), transparent);
+  background: linear-gradient(90deg, transparent, var(--mahi-accent-border, rgba(64, 160, 255, 0.3)), transparent);
   opacity: 0;
   transition: opacity 180ms ease;
 }
 
 .mahi-project-card:hover {
-  background: rgba(14, 30, 54, 0.88);
-  border-color: rgba(64, 150, 255, 0.35);
+  background: var(--mahi-glass-elevated-hover, rgba(14, 30, 54, 0.88));
+  border-color: var(--mahi-accent-border, rgba(64, 150, 255, 0.35));
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), 0 0 16px rgba(47, 127, 255, 0.12);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), 0 0 16px var(--mahi-accent-glow, rgba(47, 127, 255, 0.12));
 }
 
 .mahi-project-card:hover::before {

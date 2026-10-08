@@ -138,9 +138,12 @@
 .wi-state-panel,
 .wi-healthy-state,
 .wi-filter-empty {
-  background: rgba(10, 24, 44, 0.62);
-  border: 1px solid rgba(64, 128, 255, 0.16);
-  border-radius: 10px;
+  background: var(--mahi-glass-elevated, rgba(10, 24, 44, 0.62));
+  border: 1px solid var(--mahi-glass-border, rgba(64, 128, 255, 0.16));
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25), inset 0 1px 0 var(--mahi-glass-highlight, rgba(255, 255, 255, 0.05));
 }
 
 .wi-summary-section {

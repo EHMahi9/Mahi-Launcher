@@ -21,12 +21,14 @@
 }
 
 .mahi-settings-modal {
-  width: 560px;
+  width: 580px;
   max-width: 92vw;
-  background: rgba(10, 22, 40, 0.95);
-  border: 1px solid rgba(64, 128, 255, 0.22);
+  background: var(--mahi-glass-modal);
+  border: 1px solid var(--mahi-glass-border);
   border-radius: 14px;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 24px rgba(47, 127, 255, 0.15);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 24px var(--mahi-accent-glow), inset 0 1px 0 var(--mahi-glass-highlight);
+  backdrop-filter: blur(var(--mahi-glass-blur));
+  -webkit-backdrop-filter: blur(var(--mahi-glass-blur));
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -49,8 +51,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 18px 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-  background: rgba(14, 30, 54, 0.6);
+  border-bottom: 1px solid var(--mahi-glass-border);
+  background: var(--mahi-glass-surface);
 }
 
 .mahi-settings-title-group {
@@ -63,9 +65,9 @@
   width: 36px;
   height: 36px;
   border-radius: 10px;
-  background: rgba(47, 127, 255, 0.15);
-  border: 1px solid rgba(47, 127, 255, 0.3);
-  color: #00d2ff;
+  background: var(--mahi-accent-subtle);
+  border: 1px solid var(--mahi-accent-border);
+  color: var(--mahi-accent-primary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -427,8 +429,8 @@
   align-items: center;
   gap: 6px;
   padding: 8px 20px;
-  background: rgba(8, 18, 32, 0.7);
-  border-bottom: 1px solid rgba(64, 128, 255, 0.12);
+  background: var(--mahi-glass-surface);
+  border-bottom: 1px solid var(--mahi-glass-border);
 }
 
 .mahi-settings-tab {
@@ -452,9 +454,9 @@
 }
 
 .mahi-settings-tab.active {
-  background: rgba(47, 127, 255, 0.15);
-  border-color: rgba(47, 127, 255, 0.35);
-  color: #00d2ff;
+  background: var(--mahi-accent-subtle);
+  border-color: var(--mahi-accent-border);
+  color: var(--mahi-accent-primary);
 }
 
 /* Phase 18 Keyboard Shortcuts & Help Grid */
@@ -563,4 +565,181 @@
   border-color: rgba(47, 127, 255, 0.4);
   transform: translateY(-1px);
 }
+
+/* Appearance & Visual Identity Tab */
+.mahi-appearance-presets-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+@media (max-width: 600px) {
+  .mahi-appearance-presets-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.mahi-preset-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--mahi-glass-elevated);
+  border: 1px solid var(--mahi-glass-border);
+  color: #cbd5e1;
+  font-size: 12px;
+  font-weight: 550;
+  cursor: pointer;
+  transition: all 140ms ease;
+  backdrop-filter: blur(var(--mahi-glass-blur));
+  -webkit-backdrop-filter: blur(var(--mahi-glass-blur));
+}
+
+.mahi-preset-btn:hover {
+  background: var(--mahi-glass-elevated-hover);
+  border-color: var(--mahi-glass-highlight);
+  color: #ffffff;
+}
+
+.mahi-preset-btn.active {
+  background: var(--mahi-accent-subtle);
+  border-color: var(--mahi-accent-primary);
+  color: #ffffff;
+  box-shadow: 0 0 12px var(--mahi-accent-glow), inset 0 1px 0 var(--mahi-glass-highlight);
+}
+
+.mahi-preset-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.mahi-appearance-setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 14px;
+  background: var(--mahi-glass-elevated);
+  border: 1px solid var(--mahi-glass-border);
+  box-shadow: inset 0 1px 0 var(--mahi-glass-highlight);
+  border-radius: 8px;
+  backdrop-filter: blur(var(--mahi-glass-blur));
+  -webkit-backdrop-filter: blur(var(--mahi-glass-blur));
+}
+
+.mahi-setting-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mahi-setting-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #f1f5f9;
+}
+
+.mahi-setting-desc {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.mahi-segmented-group {
+  display: flex;
+  align-items: center;
+  background: rgba(6, 14, 26, 0.7);
+  border: 1px solid var(--mahi-glass-border);
+  border-radius: 6px;
+  padding: 2px;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.mahi-segmented-btn {
+  padding: 4px 10px;
+  border-radius: 4px;
+  background: transparent;
+  border: none;
+  color: #8ea0bc;
+  font-size: 11.5px;
+  font-weight: 550;
+  cursor: pointer;
+  transition: all 130ms ease;
+  white-space: nowrap;
+}
+
+.mahi-segmented-btn:hover {
+  color: #cbd5e1;
+}
+
+.mahi-segmented-btn.active {
+  background: var(--mahi-accent-subtle);
+  color: var(--mahi-accent-primary);
+  border: 1px solid var(--mahi-accent-border);
+  box-shadow: 0 0 8px var(--mahi-accent-glow);
+}
+
+.mahi-appearance-preview-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: var(--mahi-glass-elevated);
+  backdrop-filter: blur(var(--mahi-glass-blur));
+  -webkit-backdrop-filter: blur(var(--mahi-glass-blur));
+  border: 1px solid var(--mahi-glass-border);
+  box-shadow: inset 0 1px 0 var(--mahi-glass-highlight), 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.mahi-appearance-preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mahi-preview-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--mahi-accent-subtle);
+  border: 1px solid var(--mahi-accent-border);
+  color: var(--mahi-accent-primary);
+}
+
+.mahi-appearance-reset-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 6px;
+}
+
+.mahi-reset-appearance-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--mahi-glass-border);
+  border-radius: 6px;
+  color: #cbd5e1;
+  font-size: 11.5px;
+  font-weight: 550;
+  cursor: pointer;
+  transition: all 140ms ease;
+}
+
+.mahi-reset-appearance-btn:hover {
+  background: var(--mahi-glass-elevated-hover);
+  border-color: var(--mahi-accent-border);
+  color: #ffffff;
+}
+
 

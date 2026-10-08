@@ -77,15 +77,16 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.15s ease;
-  background: rgba(64, 128, 255, 0.14);
+  background: var(--mahi-accent-subtle);
   color: #e2edff;
-  border: 1px solid rgba(64, 128, 255, 0.3);
+  border: 1px solid var(--mahi-accent-border);
 }
 
 .mahi-health-btn:hover:not(:disabled) {
-  background: rgba(64, 128, 255, 0.25);
-  border-color: rgba(64, 128, 255, 0.5);
-  box-shadow: 0 0 12px rgba(64, 128, 255, 0.25);
+  background: var(--mahi-accent-primary);
+  border-color: var(--mahi-accent-border);
+  box-shadow: 0 0 16px var(--mahi-accent-glow);
+  color: #ffffff;
 }
 
 .mahi-health-btn:disabled {
@@ -124,8 +125,11 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(180deg, rgba(10, 24, 44, 0.75) 0%, rgba(5, 11, 20, 0.85) 100%);
-  border: 1px solid rgba(64, 128, 255, 0.2);
+  background: var(--mahi-glass-elevated);
+  backdrop-filter: blur(var(--mahi-glass-blur));
+  -webkit-backdrop-filter: blur(var(--mahi-glass-blur));
+  border: 1px solid var(--mahi-glass-border);
+  box-shadow: inset 0 1px 0 var(--mahi-glass-highlight), 0 8px 32px rgba(0, 0, 0, 0.3);
   border-radius: 10px;
   padding: 20px;
   text-align: center;
@@ -191,8 +195,11 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: rgba(10, 24, 44, 0.6);
-  border: 1px solid rgba(64, 128, 255, 0.15);
+  background: var(--mahi-glass-elevated);
+  backdrop-filter: blur(var(--mahi-glass-blur));
+  -webkit-backdrop-filter: blur(var(--mahi-glass-blur));
+  border: 1px solid var(--mahi-glass-border);
+  box-shadow: inset 0 1px 0 var(--mahi-glass-highlight);
   border-radius: 8px;
   padding: 16px;
   position: relative;
@@ -201,8 +208,9 @@
 }
 
 .mahi-health-stat-box:hover {
-  background: rgba(15, 34, 60, 0.75);
-  border-color: rgba(64, 128, 255, 0.35);
+  background: var(--mahi-glass-elevated-hover);
+  border-color: var(--mahi-accent-border);
+  box-shadow: inset 0 1px 0 var(--mahi-glass-highlight), 0 4px 16px var(--mahi-accent-glow);
   transform: translateY(-1px);
 }
 

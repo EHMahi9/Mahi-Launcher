@@ -20,7 +20,8 @@ import {
   Radio,
   Activity,
   BrainCircuit,
-  RefreshCw
+  RefreshCw,
+  Palette
 } from 'lucide-react';
 import { TitleBar } from './components/TitleBar/TitleBar';
 import { SearchBar } from './components/SearchBar/SearchBar';
@@ -99,6 +100,7 @@ import {
   stopWorkspaceProcess
 } from './services/tauriApi';
 import { WorkstationIntelligenceSummary } from './types/intelligence';
+import { loadAppearanceSettings, applyAppearanceToDom } from './types/appearance';
 import './App.css';
 
 function App() {
@@ -120,7 +122,7 @@ function App() {
   const [debugStorage, setDebugStorage] = useState<DebugStorageInfo | null>(null);
   const [workstationSummary, setWorkstationSummary] = useState<WorkstationIntelligenceSummary | null>(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [settingsInitialTab, setSettingsInitialTab] = useState<'locations' | 'maintenance' | 'help'>('locations');
+  const [settingsInitialTab, setSettingsInitialTab] = useState<'locations' | 'appearance' | 'maintenance' | 'help'>('locations');
   const [loading, setLoading] = useState(false);
   const [latencyMs, setLatencyMs] = useState(12);
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -566,6 +568,10 @@ function App() {
   };
 
   useEffect(() => {
+    // Initialize appearance settings on DOM
+    const initialAppearance = loadAppearanceSettings();
+    applyAppearanceToDom(initialAppearance);
+
     loadData();
 
     let unlisten: (() => void) | undefined;
@@ -1085,6 +1091,14 @@ function App() {
                 : 'Workstation Intelligence'
             }
             onClick={() => setActiveNav('workstation-intelligence')}
+          />
+          <IconButton 
+            icon={<Palette size={15} strokeWidth={2.2} />} 
+            tooltip="Appearance & Themes"
+            onClick={() => {
+              setSettingsInitialTab('appearance');
+              setIsSettingsOpen(true);
+            }}
           />
           <IconButton 
             icon={<HelpCircle size={15} strokeWidth={2.2} />} 

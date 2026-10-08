@@ -1,10 +1,10 @@
 .mahi-sidebar {
   width: 230px;
   min-width: 230px;
-  background: rgba(7, 17, 31, 0.72);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-right: 1px solid rgba(64, 128, 255, 0.08);
+  background: var(--mahi-glass-surface, rgba(7, 17, 31, 0.72));
+  backdrop-filter: blur(var(--mahi-glass-blur, 20px));
+  -webkit-backdrop-filter: blur(var(--mahi-glass-blur, 20px));
+  border-right: 1px solid var(--mahi-glass-border, rgba(64, 128, 255, 0.08));
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -68,10 +68,10 @@
 }
 
 .mahi-sidebar-item.active {
-  background: rgba(30, 80, 180, 0.2);
+  background: var(--mahi-accent-subtle, rgba(30, 80, 180, 0.2));
   color: #ffffff;
-  border: 1px solid rgba(64, 150, 255, 0.3);
-  box-shadow: 0 0 16px rgba(47, 127, 255, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--mahi-accent-border, rgba(64, 150, 255, 0.3));
+  box-shadow: 0 0 16px var(--mahi-accent-glow, rgba(47, 127, 255, 0.14)), inset 0 1px 0 var(--mahi-glass-highlight, rgba(255, 255, 255, 0.08));
 }
 
 .mahi-sidebar-active-indicator {
@@ -86,8 +86,8 @@
 }
 
 .mahi-sidebar-item.active .mahi-sidebar-active-indicator {
-  background: #00d2ff;
-  box-shadow: 0 0 8px #00d2ff;
+  background: var(--mahi-accent-primary, #00d2ff);
+  box-shadow: 0 0 8px var(--mahi-accent-glow, #00d2ff);
 }
 
 .mahi-sidebar-icon {
@@ -99,7 +99,7 @@
 }
 
 .mahi-sidebar-item.active .mahi-sidebar-icon {
-  color: #2f7fff;
+  color: var(--mahi-accent-primary, #2f7fff);
 }
 
 .mahi-sidebar-label {

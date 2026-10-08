@@ -92,10 +92,12 @@
 .si-drive-pills {
   display: flex;
   flex-wrap: wrap;
-  background: rgba(15, 23, 42, 0.7);
+  background: var(--mahi-glass-elevated);
+  backdrop-filter: blur(var(--mahi-glass-blur));
+  -webkit-backdrop-filter: blur(var(--mahi-glass-blur));
   padding: 3px;
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--mahi-glass-border);
 }
 
 .si-drive-pill {
@@ -114,9 +116,9 @@
 }
 
 .si-drive-pill.active {
-  background: rgba(0, 210, 255, 0.16);
-  color: #00d2ff;
-  border: 1px solid rgba(0, 210, 255, 0.3);
+  background: var(--mahi-accent-subtle);
+  color: var(--mahi-accent-primary);
+  border: 1px solid var(--mahi-accent-border);
 }
 
 .si-btn-refresh {
@@ -151,12 +153,14 @@
 
 /* Hero Drive Gauge */
 .si-hero-card {
-  background: linear-gradient(135deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--mahi-glass-elevated);
+  backdrop-filter: blur(var(--mahi-glass-blur));
+  -webkit-backdrop-filter: blur(var(--mahi-glass-blur));
+  border: 1px solid var(--mahi-glass-border);
   border-radius: 12px;
   padding: 20px 24px;
   min-width: 0;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25), inset 0 1px 0 var(--mahi-glass-highlight);
 }
 
 .si-gauge-header {
@@ -264,15 +268,20 @@
 }
 
 .si-recov-card {
-  background: rgba(30, 41, 59, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--mahi-glass-elevated);
+  backdrop-filter: blur(var(--mahi-glass-blur));
+  -webkit-backdrop-filter: blur(var(--mahi-glass-blur));
+  border: 1px solid var(--mahi-glass-border);
+  box-shadow: inset 0 1px 0 var(--mahi-glass-highlight);
   border-radius: 10px;
   padding: 16px;
   transition: all 0.2s ease;
 }
 
 .si-recov-card:hover {
-  border-color: rgba(255, 255, 255, 0.16);
+  background: var(--mahi-glass-elevated-hover);
+  border-color: var(--mahi-accent-border);
+  box-shadow: inset 0 1px 0 var(--mahi-glass-highlight), 0 4px 16px var(--mahi-accent-glow);
   transform: translateY(-1px);
 }
 
@@ -357,14 +366,17 @@
 }
 
 .si-tab.active {
-  color: #00d2ff;
-  background: rgba(0, 210, 255, 0.1);
+  color: var(--mahi-accent-primary);
+  background: var(--mahi-accent-subtle);
 }
 
 /* Cards & Section Boxes */
 .si-card-box {
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--mahi-glass-elevated);
+  backdrop-filter: blur(var(--mahi-glass-blur));
+  -webkit-backdrop-filter: blur(var(--mahi-glass-blur));
+  border: 1px solid var(--mahi-glass-border);
+  box-shadow: inset 0 1px 0 var(--mahi-glass-highlight);
   border-radius: 10px;
   padding: 20px;
   min-width: 0;

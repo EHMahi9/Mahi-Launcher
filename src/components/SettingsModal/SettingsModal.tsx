@@ -15,13 +15,27 @@ import {
   ExternalLink,
   Activity,
   BrainCircuit,
-  Compass
+  Compass,
+  Palette,
+  RotateCcw
 } from 'lucide-react';
 import { DebugStorageInfo, CleanStorageResult } from '../../types/project';
 import { getDebugStorageInfo, cleanDebugArtifacts } from '../../services/tauriApi';
+import {
+  AppearanceSettings,
+  AccentPresetId,
+  GlassIntensity,
+  BlurStrength,
+  GlowIntensity,
+  ACCENT_PRESETS,
+  DEFAULT_APPEARANCE,
+  loadAppearanceSettings,
+  saveAppearanceSettings,
+  applyAppearanceToDom
+} from '../../types/appearance';
 import './SettingsModal.css';
 
-export type SettingsTabId = 'locations' | 'maintenance' | 'help';
+export type SettingsTabId = 'locations' | 'appearance' | 'maintenance' | 'help';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -49,6 +63,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   onRemoveProjectFolder,
 }) => {
   const [activeTab, setActiveTab] = useState<SettingsTabId>(initialTab);
+  const [appearance, setAppearance] = useState<AppearanceSettings>(DEFAULT_APPEARANCE);
   const [storageInfo, setStorageInfo] = useState<DebugStorageInfo | null>(null);
   const [loading, setLoading] = useState(false);
   const [cleaning, setCleaning] = useState(false);
@@ -75,11 +90,25 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
       setActiveTab(initialTab);
       setCleanResult(null);
       setConfirmPrompt(false);
+      setAppearance(loadAppearanceSettings());
       fetchStorageInfo();
     }
   }, [isOpen, initialTab]);
 
   if (!isOpen) return null;
+
+  const handleUpdateAppearance = (partial: Partial<AppearanceSettings>) => {
+    const next: AppearanceSettings = { ...appearance, ...partial };
+    setAppearance(next);
+    applyAppearanceToDom(next);
+    saveAppearanceSettings(next);
+  };
+
+  const handleResetAppearance = () => {
+    setAppearance(DEFAULT_APPEARANCE);
+    applyAppearanceToDom(DEFAULT_APPEARANCE);
+    saveAppearanceSettings(DEFAULT_APPEARANCE);
+  };
 
   const handleClean = async () => {
     setCleaning(true);
@@ -105,7 +134,13 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
         <div className="mahi-settings-header">
           <div className="mahi-settings-title-group">
             <div className="mahi-settings-icon-badge">
-              {activeTab === 'help' ? <HelpCircle size={18} /> : <HardDrive size={18} />}
+              {activeTab === 'appearance' ? (
+                <Palette size={18} />
+              ) : activeTab === 'help' ? (
+                <HelpCircle size={18} />
+              ) : (
+                <HardDrive size={18} />
+              )}
             </div>
             <div>
               <h2 className="mahi-settings-title">MAHI Settings & Preferences</h2>
@@ -133,6 +168,16 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           >
             <FolderGit2 size={13} />
             <span>Locations</span>
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === 'appearance'}
+            className={`mahi-settings-tab ${activeTab === 'appearance' ? 'active' : ''}`}
+            onClick={() => setActiveTab('appearance')}
+          >
+            <Palette size={13} />
+            <span>Appearance</span>
           </button>
           <button
             type="button"
@@ -259,7 +304,137 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             </>
           )}
 
-          {/* TAB 2: Maintenance & Storage */}
+          {/* TAB 2: Appearance & Visual Identity */}
+          {activeTab === 'appearance' && (
+            <>
+              {/* Section 1: Color Identity Presets */}
+              <div className="mahi-settings-section">
+                <div className="mahi-settings-section-header">
+                  <div className="mahi-section-heading">
+                    <Palette size={16} className="section-icon" />
+                    <h3>Accent Color Theme</h3>
+                  </div>
+                </div>
+                <p className="mahi-settings-desc">
+                  Select a signature color identity for workspace highlights, active indicators, and luminous borders.
+                </p>
+
+                <div className="mahi-appearance-presets-grid">
+                  {(Object.keys(ACCENT_PRESETS) as AccentPresetId[]).map((presetKey) => {
+                    const p = ACCENT_PRESETS[presetKey];
+                    const isSelected = appearance.preset === presetKey;
+                    return (
+                      <button
+                        key={presetKey}
+                        type="button"
+                        className={`mahi-preset-btn ${isSelected ? 'active' : ''}`}
+                        onClick={() => handleUpdateAppearance({ preset: presetKey })}
+                      >
+                        <span 
+                          className="mahi-preset-dot" 
+                          style={{ backgroundColor: p.primary, boxShadow: `0 0 8px ${p.primary}` }} 
+                        />
+                        <span>{p.name}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Section 2: Glass Surface Translucency */}
+              <div className="mahi-settings-section">
+                <div className="mahi-appearance-setting-row">
+                  <div className="mahi-setting-meta">
+                    <div className="mahi-setting-title">Glass Surface Intensity</div>
+                    <div className="mahi-setting-desc">Adjust the translucency level of cards, panels, and sidebars.</div>
+                  </div>
+                  <div className="mahi-segmented-group">
+                    {(['low', 'medium', 'high'] as GlassIntensity[]).map((intensity) => (
+                      <button
+                        key={intensity}
+                        type="button"
+                        className={`mahi-segmented-btn ${appearance.glassIntensity === intensity ? 'active' : ''}`}
+                        onClick={() => handleUpdateAppearance({ glassIntensity: intensity })}
+                      >
+                        {intensity.charAt(0).toUpperCase() + intensity.slice(1)}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Section 3: Backdrop Blur Strength */}
+              <div className="mahi-settings-section">
+                <div className="mahi-appearance-setting-row">
+                  <div className="mahi-setting-meta">
+                    <div className="mahi-setting-title">Backdrop Blur Strength</div>
+                    <div className="mahi-setting-desc">Control diffusion depth across background layers.</div>
+                  </div>
+                  <div className="mahi-segmented-group">
+                    {(['subtle', 'standard', 'deep'] as BlurStrength[]).map((blur) => (
+                      <button
+                        key={blur}
+                        type="button"
+                        className={`mahi-segmented-btn ${appearance.blurStrength === blur ? 'active' : ''}`}
+                        onClick={() => handleUpdateAppearance({ blurStrength: blur })}
+                      >
+                        {blur.charAt(0).toUpperCase() + blur.slice(1)}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Section 4: Luminous Glow */}
+              <div className="mahi-settings-section">
+                <div className="mahi-appearance-setting-row">
+                  <div className="mahi-setting-meta">
+                    <div className="mahi-setting-title">Luminous Glow Highlight</div>
+                    <div className="mahi-setting-desc">Radiant accent bloom on active elements, buttons, and cards.</div>
+                  </div>
+                  <div className="mahi-segmented-group">
+                    {(['off', 'subtle', 'vibrant'] as GlowIntensity[]).map((glow) => (
+                      <button
+                        key={glow}
+                        type="button"
+                        className={`mahi-segmented-btn ${appearance.glowIntensity === glow ? 'active' : ''}`}
+                        onClick={() => handleUpdateAppearance({ glowIntensity: glow })}
+                      >
+                        {glow.charAt(0).toUpperCase() + glow.slice(1)}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Section 5: Glass Preview & Reset */}
+              <div className="mahi-settings-section">
+                <div className="mahi-appearance-preview-card">
+                  <div className="mahi-appearance-preview-header">
+                    <span style={{ fontSize: '12px', fontWeight: 600, color: '#e2e8f0' }}>Live Glass Surface Preview</span>
+                    <span className="mahi-preview-badge">Active Atmosphere</span>
+                  </div>
+                  <p style={{ margin: 0, fontSize: '11.5px', color: '#94a3b8', lineHeight: 1.4 }}>
+                    Translucent surface layers, specular highlights, and soft luminous borders active across MAHI workspace views.
+                  </p>
+                </div>
+
+                <div className="mahi-appearance-reset-row">
+                  <span style={{ fontSize: '11px', color: '#64748b' }}>Restores the canonical MAHI Blue developer appearance.</span>
+                  <button
+                    type="button"
+                    className="mahi-reset-appearance-btn"
+                    onClick={handleResetAppearance}
+                  >
+                    <RotateCcw size={12} />
+                    <span>Reset to MAHI Default</span>
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
+
+          {/* TAB 3: Maintenance & Storage */}
           {activeTab === 'maintenance' && (
             <>
               {onOpenStorageIntelligence && (
