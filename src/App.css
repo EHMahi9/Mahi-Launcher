@@ -26,13 +26,15 @@
   --mahi-accent-gradient: linear-gradient(135deg, #1b5edb 0%, #00d2ff 100%);
 
   /* Layered Glass Hierarchy */
-  --mahi-glass-surface: rgba(7, 17, 31, 0.72);
-  --mahi-glass-elevated: rgba(10, 22, 40, 0.65);
-  --mahi-glass-elevated-hover: rgba(14, 30, 54, 0.88);
-  --mahi-glass-modal: rgba(10, 22, 40, 0.94);
+  --mahi-glass-surface: rgba(7, 17, 31, 0.60);
+  --mahi-glass-elevated: rgba(10, 22, 40, 0.52);
+  --mahi-glass-elevated-hover: rgba(14, 30, 54, 0.72);
+  --mahi-glass-modal: rgba(10, 22, 40, 0.90);
   --mahi-glass-blur: 18px;
-  --mahi-glass-border: rgba(64, 128, 255, 0.14);
-  --mahi-glass-highlight: rgba(255, 255, 255, 0.07);
+  --mahi-glass-border: rgba(47, 127, 255, 0.16);
+  --mahi-glass-border-hover: rgba(47, 127, 255, 0.32);
+  --mahi-glass-ambient-opacity: 0.70;
+  --mahi-glass-highlight: rgba(255, 255, 255, 0.08);
   --mahi-focus-ring: #2f7fff;
 }
 
@@ -90,6 +92,39 @@ textarea:focus-visible,
   position: relative;
 }
 
+/* Ambient luminous bleed fields behind glass surfaces */
+.mahi-app-root::before {
+  content: '';
+  position: absolute;
+  top: -8%;
+  left: 12%;
+  width: 58vw;
+  height: 48vh;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--mahi-accent-glow, rgba(47, 127, 255, 0.28)) 0%, transparent 70%);
+  filter: blur(65px);
+  opacity: var(--mahi-glass-ambient-opacity, 0.70);
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity 200ms ease;
+}
+
+.mahi-app-root::after {
+  content: '';
+  position: absolute;
+  bottom: -6%;
+  right: 8%;
+  width: 52vw;
+  height: 52vh;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--mahi-accent-subtle, rgba(47, 127, 255, 0.16)) 0%, transparent 70%);
+  filter: blur(75px);
+  opacity: var(--mahi-glass-ambient-opacity, 0.70);
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity 200ms ease;
+}
+
 /* Top Header Bar */
 .mahi-top-header {
   height: 62px;
@@ -98,7 +133,7 @@ textarea:focus-visible,
   justify-content: space-between;
   gap: 16px;
   padding: 0 20px;
-  background: var(--mahi-glass-surface, rgba(7, 17, 31, 0.65));
+  background: var(--mahi-glass-surface, rgba(7, 17, 31, 0.60));
   border-bottom: 1px solid var(--mahi-glass-border, rgba(64, 128, 255, 0.08));
   backdrop-filter: blur(var(--mahi-glass-blur, 16px));
   -webkit-backdrop-filter: blur(var(--mahi-glass-blur, 16px));
@@ -133,6 +168,7 @@ textarea:focus-visible,
   overflow: hidden;
   position: relative;
   min-width: 0;
+  z-index: 1;
 }
 
 /* Main Scroll Area */

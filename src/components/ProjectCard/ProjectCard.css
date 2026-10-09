@@ -96,7 +96,7 @@
 }
 
 .mahi-card-launch-btn:hover {
-  background: rgba(0, 210, 255, 0.12);
+  background: var(--mahi-accent-subtle, rgba(0, 210, 255, 0.12));
 }
 
 .mahi-project-arrow {
@@ -107,7 +107,7 @@
 
 .mahi-project-card:hover .mahi-project-arrow,
 .mahi-card-launch-btn:hover .mahi-project-arrow {
-  color: #00d2ff;
+  color: var(--mahi-accent-primary, #00d2ff);
   transform: translate(2px, -2px);
 }
 
@@ -191,8 +191,8 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  background: rgba(15, 30, 56, 0.7);
-  border: 1px solid rgba(64, 128, 255, 0.16);
+  background: var(--mahi-glass-elevated, rgba(15, 30, 56, 0.7));
+  border: 1px solid var(--mahi-glass-border, rgba(64, 128, 255, 0.16));
   color: #8ea0bc;
   font-size: 10.5px;
   font-weight: 550;
@@ -203,8 +203,8 @@
 }
 
 .mahi-card-action-btn:hover {
-  background: rgba(47, 127, 255, 0.25);
-  border-color: #2f7fff;
+  background: var(--mahi-accent-subtle, rgba(47, 127, 255, 0.25));
+  border-color: var(--mahi-accent-primary, #2f7fff);
   color: #ffffff;
   transform: translateY(-1px);
 }

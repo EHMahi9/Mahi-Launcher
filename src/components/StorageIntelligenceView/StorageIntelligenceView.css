@@ -41,15 +41,15 @@
   width: 44px;
   height: 44px;
   border-radius: 10px;
-  background: rgba(0, 210, 255, 0.12);
+  background: var(--mahi-accent-subtle, rgba(0, 210, 255, 0.12));
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(0, 210, 255, 0.25);
+  border: 1px solid var(--mahi-accent-border, rgba(0, 210, 255, 0.25));
 }
 
 .si-icon-brand {
-  color: #00d2ff;
+  color: var(--mahi-accent-primary, #00d2ff);
 }
 
 .si-header-badge {
@@ -192,7 +192,7 @@
 .si-gauge-percent {
   font-size: 28px;
   font-weight: 800;
-  color: #00d2ff;
+  color: var(--mahi-accent-primary, #00d2ff);
 }
 
 .si-gauge-used {
@@ -217,7 +217,7 @@
 }
 
 .fill-blue {
-  background: linear-gradient(90deg, #00d2ff, #2f7fff);
+  background: var(--mahi-accent-gradient, linear-gradient(90deg, #00d2ff, #2f7fff));
 }
 
 .fill-orange {

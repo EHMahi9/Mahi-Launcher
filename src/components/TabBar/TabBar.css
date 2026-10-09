@@ -52,25 +52,25 @@
 }
 
 .mahi-tab:hover:not(.is-active) {
-  background: rgba(47, 127, 255, 0.1);
-  border-color: rgba(47, 127, 255, 0.2);
+  background: var(--mahi-accent-subtle, rgba(47, 127, 255, 0.1));
+  border-color: var(--mahi-accent-border, rgba(47, 127, 255, 0.2));
 }
 
 .mahi-tab.is-active {
-  background: rgba(47, 127, 255, 0.16);
-  border-color: rgba(47, 127, 255, 0.35);
+  background: var(--mahi-accent-subtle, rgba(47, 127, 255, 0.16));
+  border-color: var(--mahi-accent-border, rgba(47, 127, 255, 0.35));
   border-bottom-color: transparent;
-  box-shadow: 0 -1px 6px rgba(47, 127, 255, 0.12);
+  box-shadow: 0 -1px 6px var(--mahi-accent-glow, rgba(47, 127, 255, 0.12));
 }
 
 .mahi-tab-icon {
-  color: #4a90e2;
+  color: var(--mahi-accent-primary, #4a90e2);
   flex-shrink: 0;
   opacity: 0.85;
 }
 
 .mahi-tab.is-active .mahi-tab-icon {
-  color: #2f7fff;
+  color: var(--mahi-accent-primary, #2f7fff);
   opacity: 1;
 }
 
@@ -137,7 +137,7 @@
 }
 
 .mahi-tab-new-btn:hover {
-  background: rgba(47, 127, 255, 0.16);
-  border-color: rgba(47, 127, 255, 0.3);
-  color: #2f7fff;
+  background: var(--mahi-accent-subtle, rgba(47, 127, 255, 0.16));
+  border-color: var(--mahi-accent-border, rgba(47, 127, 255, 0.3));
+  color: var(--mahi-accent-primary, #2f7fff);
 }

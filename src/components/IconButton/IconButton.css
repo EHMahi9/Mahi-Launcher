@@ -2,8 +2,8 @@
   display: flex;
   align-items: center;
   gap: 7px;
-  background: rgba(10, 22, 40, 0.7);
-  border: 1px solid rgba(64, 128, 255, 0.16);
+  background: var(--mahi-glass-elevated, rgba(10, 22, 40, 0.7));
+  border: 1px solid var(--mahi-glass-border, rgba(64, 128, 255, 0.16));
   border-radius: 8px;
   padding: 6px 10px;
   color: #8ea0bc;
@@ -13,21 +13,21 @@
   outline: none;
   box-shadow: none;
   transition: all 140ms ease;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(var(--mahi-glass-blur, 8px));
+  -webkit-backdrop-filter: blur(var(--mahi-glass-blur, 8px));
 }
 
 .mahi-icon-btn:hover {
-  background: rgba(16, 32, 58, 0.9);
+  background: var(--mahi-glass-elevated-hover, rgba(16, 32, 58, 0.9));
   color: #f0f4fc;
-  border-color: rgba(64, 150, 255, 0.35);
-  box-shadow: 0 0 10px rgba(47, 127, 255, 0.12);
+  border-color: var(--mahi-accent-border, rgba(64, 150, 255, 0.35));
+  box-shadow: 0 0 10px var(--mahi-accent-glow, rgba(47, 127, 255, 0.12));
 }
 
 .mahi-icon-btn.active {
-  background: rgba(47, 127, 255, 0.18);
-  color: #2f7fff;
-  border-color: #2f7fff;
+  background: var(--mahi-accent-subtle, rgba(47, 127, 255, 0.18));
+  color: var(--mahi-accent-primary, #2f7fff);
+  border-color: var(--mahi-accent-primary, #2f7fff);
 }
 
 .mahi-icon-btn-icon {

@@ -114,14 +114,14 @@
   font-weight: 600;
   padding: 1px 6px;
   border-radius: 10px;
-  background: rgba(47, 127, 255, 0.18);
-  border: 1px solid rgba(47, 127, 255, 0.32);
-  color: #70aaff;
+  background: var(--mahi-accent-subtle, rgba(47, 127, 255, 0.18));
+  border: 1px solid var(--mahi-accent-border, rgba(47, 127, 255, 0.32));
+  color: var(--mahi-accent-primary, #70aaff);
 }
 
 .mahi-sidebar-footer {
   padding: 12px 14px;
-  border-top: 1px solid rgba(64, 128, 255, 0.07);
+  border-top: 1px solid var(--mahi-glass-border, rgba(64, 128, 255, 0.07));
   background: rgba(5, 11, 20, 0.4);
 }
 

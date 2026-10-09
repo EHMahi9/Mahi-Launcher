@@ -177,18 +177,21 @@ export function applyAppearanceToDom(settings: AppearanceSettings): void {
   );
 
   // 3. Glass opacities
-  let surfaceOpacity = 0.72;
-  let elevatedOpacity = 0.65;
-  let modalOpacity = 0.94;
+  let surfaceOpacity = 0.60;
+  let elevatedOpacity = 0.52;
+  let modalOpacity = 0.90;
+  let ambientOpacity = '0.70';
 
   if (settings.glassIntensity === 'low') {
     surfaceOpacity = 0.85;
-    elevatedOpacity = 0.78;
-    modalOpacity = 0.97;
+    elevatedOpacity = 0.75;
+    modalOpacity = 0.96;
+    ambientOpacity = '0.45';
   } else if (settings.glassIntensity === 'high') {
-    surfaceOpacity = 0.56;
-    elevatedOpacity = 0.50;
-    modalOpacity = 0.88;
+    surfaceOpacity = 0.42;
+    elevatedOpacity = 0.34;
+    modalOpacity = 0.84;
+    ambientOpacity = '0.95';
   }
 
   root.style.setProperty('--mahi-glass-surface', `rgba(7, 17, 31, ${surfaceOpacity})`);
@@ -198,13 +201,16 @@ export function applyAppearanceToDom(settings: AppearanceSettings): void {
     `rgba(14, 30, 54, ${Math.min(1, elevatedOpacity + 0.2)})`
   );
   root.style.setProperty('--mahi-glass-modal', `rgba(10, 22, 40, ${modalOpacity})`);
+  root.style.setProperty('--mahi-glass-ambient-opacity', ambientOpacity);
 
   // 4. Blur strength
   const blurPx = settings.blurStrength === 'subtle' ? '10px' : settings.blurStrength === 'deep' ? '24px' : '18px';
   root.style.setProperty('--mahi-glass-blur', blurPx);
 
-  // 5. Specular highlight & border
-  root.style.setProperty('--mahi-glass-highlight', 'rgba(255, 255, 255, 0.07)');
-  root.style.setProperty('--mahi-glass-border', 'rgba(64, 128, 255, 0.14)');
+  // 5. Specular highlight & border derived from accent
+  const rgb = hexToRgb(preset.primary) || { r: 47, g: 127, b: 255 };
+  root.style.setProperty('--mahi-glass-highlight', 'rgba(255, 255, 255, 0.08)');
+  root.style.setProperty('--mahi-glass-border', `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.16)`);
+  root.style.setProperty('--mahi-glass-border-hover', `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.32)`);
   root.style.setProperty('--mahi-focus-ring', preset.primary);
 }

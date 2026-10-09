@@ -3,10 +3,10 @@
   width: 330px;
   min-width: 270px;
   max-width: 420px;
-  background: rgba(7, 17, 31, 0.78);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-left: 1px solid rgba(64, 128, 255, 0.16);
+  background: var(--mahi-glass-surface, rgba(7, 17, 31, 0.78));
+  backdrop-filter: blur(var(--mahi-glass-blur, 16px));
+  -webkit-backdrop-filter: blur(var(--mahi-glass-blur, 16px));
+  border-left: 1px solid var(--mahi-glass-border, rgba(64, 128, 255, 0.16));
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -50,7 +50,7 @@
 }
 
 .mahi-preview-header-icon {
-  color: #00d2ff;
+  color: var(--mahi-accent-primary, #00d2ff);
 }
 
 .mahi-preview-close-btn {
@@ -141,9 +141,9 @@
   width: 56px;
   height: 56px;
   border-radius: 12px;
-  background: rgba(47, 127, 255, 0.12);
-  border: 1px solid rgba(47, 127, 255, 0.25);
-  color: #00d2ff;
+  background: var(--mahi-accent-subtle, rgba(47, 127, 255, 0.12));
+  border: 1px solid var(--mahi-accent-border, rgba(47, 127, 255, 0.25));
+  color: var(--mahi-accent-primary, #00d2ff);
 }
 
 .mahi-preview-multi-title {
@@ -184,14 +184,14 @@
   height: 72px;
   border-radius: 14px;
   background: rgba(14, 28, 48, 0.8);
-  border: 1px solid rgba(64, 128, 255, 0.2);
+  border: 1px solid var(--mahi-glass-border, rgba(64, 128, 255, 0.2));
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
 }
 
 .mahi-preview-icon-wrapper.folder {
-  color: #38bdf8;
-  background: rgba(14, 165, 233, 0.1);
-  border-color: rgba(56, 189, 248, 0.3);
+  color: var(--mahi-accent-primary, #38bdf8);
+  background: var(--mahi-accent-subtle, rgba(14, 165, 233, 0.1));
+  border-color: var(--mahi-accent-border, rgba(56, 189, 248, 0.3));
 }
 
 .mahi-preview-icon-wrapper.code {

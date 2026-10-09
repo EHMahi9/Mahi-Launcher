@@ -27,9 +27,9 @@
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  background: rgba(0, 210, 255, 0.12);
-  border: 1px solid rgba(0, 210, 255, 0.28);
-  color: #00d2ff;
+  background: var(--mahi-accent-subtle, rgba(0, 210, 255, 0.12));
+  border: 1px solid var(--mahi-accent-border, rgba(0, 210, 255, 0.28));
+  color: var(--mahi-accent-primary, #00d2ff);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -54,7 +54,7 @@
   align-items: center;
   gap: 6px;
   background: rgba(14, 28, 52, 0.7);
-  border: 1px solid rgba(64, 128, 255, 0.2);
+  border: 1px solid var(--mahi-glass-border, rgba(64, 128, 255, 0.2));
   color: #b0c4de;
   font-size: 12px;
   font-weight: 550;
@@ -65,8 +65,8 @@
 }
 
 .mahi-drive-refresh-btn:hover {
-  background: rgba(47, 127, 255, 0.22);
-  border-color: #2f7fff;
+  background: var(--mahi-accent-subtle, rgba(47, 127, 255, 0.22));
+  border-color: var(--mahi-accent-primary, #2f7fff);
   color: #ffffff;
 }
 
@@ -78,8 +78,8 @@
 }
 
 .mahi-drive-card {
-  background: rgba(10, 22, 40, 0.65);
-  border: 1px solid rgba(64, 128, 255, 0.16);
+  background: var(--mahi-glass-elevated, rgba(10, 22, 40, 0.65));
+  border: 1px solid var(--mahi-glass-border, rgba(64, 128, 255, 0.16));
   border-radius: 14px;
   padding: 18px 20px;
   display: flex;
@@ -88,8 +88,8 @@
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(var(--mahi-glass-blur, 12px));
+  -webkit-backdrop-filter: blur(var(--mahi-glass-blur, 12px));
   transition: all 160ms ease-out;
 }
 
@@ -100,16 +100,16 @@
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(64, 160, 255, 0.35), transparent);
+  background: linear-gradient(90deg, transparent, var(--mahi-accent-border, rgba(64, 160, 255, 0.35)), transparent);
   opacity: 0;
   transition: opacity 160ms ease;
 }
 
 .mahi-drive-card:hover {
-  background: rgba(14, 30, 54, 0.88);
-  border-color: rgba(64, 150, 255, 0.35);
+  background: var(--mahi-glass-elevated-hover, rgba(14, 30, 54, 0.88));
+  border-color: var(--mahi-accent-border, rgba(64, 150, 255, 0.35));
   transform: translateY(-2px);
-  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.35), 0 0 16px rgba(47, 127, 255, 0.14);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.35), 0 0 16px var(--mahi-accent-glow, rgba(47, 127, 255, 0.14));
 }
 
 .mahi-drive-card:hover::before {
@@ -117,9 +117,9 @@
 }
 
 .mahi-drive-card.is-selected {
-  border-color: #00d2ff;
+  border-color: var(--mahi-accent-primary, #00d2ff);
   background: rgba(16, 36, 68, 0.95);
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45), 0 0 20px rgba(0, 210, 255, 0.28);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45), 0 0 20px var(--mahi-accent-glow, rgba(0, 210, 255, 0.28));
 }
 
 .mahi-drive-card-top {
@@ -132,15 +132,15 @@
   width: 48px;
   height: 48px;
   border-radius: 12px;
-  background: rgba(47, 127, 255, 0.12);
-  border: 1px solid rgba(47, 127, 255, 0.22);
+  background: var(--mahi-accent-subtle, rgba(47, 127, 255, 0.12));
+  border: 1px solid var(--mahi-accent-border, rgba(47, 127, 255, 0.22));
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 }
 
-.mahi-drive-type-icon.fixed { color: #00d2ff; }
+.mahi-drive-type-icon.fixed { color: var(--mahi-accent-primary, #00d2ff); }
 .mahi-drive-type-icon.cloud { color: #64b5f6; }
 .mahi-drive-type-icon.usb { color: #81c784; }
 .mahi-drive-type-icon.disc { color: #ba68c8; }

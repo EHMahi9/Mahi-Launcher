@@ -127,5 +127,35 @@ describe('Appearance Token System & Persistence', () => {
     expect(style.getPropertyValue('--mahi-glass-blur')).toBe('24px');
     expect(style.getPropertyValue('--mahi-glass-surface')).toContain('0.85');
     expect(style.getPropertyValue('--mahi-accent-glow')).toContain('0.38');
+    expect(style.getPropertyValue('--mahi-glass-ambient-opacity')).toBe('0.45');
+  });
+
+  it('derives glass border dynamically from selected preset accent color', () => {
+    const greenSettings: AppearanceSettings = {
+      preset: 'green',
+      glassIntensity: 'high',
+      blurStrength: 'standard',
+      glowIntensity: 'subtle',
+    };
+
+    applyAppearanceToDom(greenSettings);
+    const style = document.documentElement.style;
+
+    // Green preset is #10b981 -> rgb(16, 185, 129)
+    expect(style.getPropertyValue('--mahi-glass-border')).toContain('rgba(16, 185, 129, 0.16)');
+    expect(style.getPropertyValue('--mahi-glass-border-hover')).toContain('rgba(16, 185, 129, 0.32)');
+    expect(style.getPropertyValue('--mahi-glass-ambient-opacity')).toBe('0.95');
+
+    const purpleSettings: AppearanceSettings = {
+      preset: 'purple',
+      glassIntensity: 'medium',
+      blurStrength: 'standard',
+      glowIntensity: 'subtle',
+    };
+
+    applyAppearanceToDom(purpleSettings);
+    // Purple preset primary is #a855f7 -> rgb(168, 85, 247)
+    expect(style.getPropertyValue('--mahi-glass-border')).toContain('rgba(168, 85, 247, 0.16)');
+    expect(style.getPropertyValue('--mahi-glass-ambient-opacity')).toBe('0.70');
   });
 });

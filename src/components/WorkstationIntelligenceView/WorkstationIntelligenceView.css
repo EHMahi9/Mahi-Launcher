@@ -21,7 +21,7 @@
   align-items: flex-start;
   gap: 20px;
   padding-bottom: 20px;
-  border-bottom: 1px solid rgba(64, 128, 255, 0.14);
+  border-bottom: 1px solid var(--mahi-glass-border, rgba(64, 128, 255, 0.14));
 }
 
 .wi-title-group {
@@ -36,9 +36,9 @@
   flex: 0 0 46px;
   width: 46px;
   height: 46px;
-  color: #00e5ff;
-  background: rgba(0, 229, 255, 0.1);
-  border: 1px solid rgba(0, 229, 255, 0.28);
+  color: var(--mahi-accent-primary, #00e5ff);
+  background: var(--mahi-accent-subtle, rgba(0, 229, 255, 0.1));
+  border: 1px solid var(--mahi-accent-border, rgba(0, 229, 255, 0.28));
   border-radius: 10px;
 }
 
@@ -57,7 +57,7 @@
 
 .wi-eyebrow {
   gap: 6px;
-  color: #00e5ff;
+  color: var(--mahi-accent-primary, #00e5ff);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -82,10 +82,10 @@
 .wi-safe-action {
   justify-content: center;
   gap: 7px;
-  border: 1px solid rgba(64, 128, 255, 0.32);
+  border: 1px solid var(--mahi-accent-border, rgba(64, 128, 255, 0.32));
   border-radius: 7px;
   color: #e2edff;
-  background: rgba(64, 128, 255, 0.14);
+  background: var(--mahi-accent-subtle, rgba(64, 128, 255, 0.14));
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
@@ -100,8 +100,8 @@
 
 .wi-refresh-button:hover:not(:disabled),
 .wi-safe-action:hover {
-  background: rgba(64, 128, 255, 0.26);
-  border-color: rgba(64, 160, 255, 0.58);
+  background: var(--mahi-accent-glow, rgba(64, 128, 255, 0.26));
+  border-color: var(--mahi-accent-border, rgba(64, 160, 255, 0.58));
 }
 
 .wi-refresh-button:disabled {

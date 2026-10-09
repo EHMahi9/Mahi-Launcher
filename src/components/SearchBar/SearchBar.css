@@ -7,27 +7,27 @@
   position: relative;
   display: flex;
   align-items: center;
-  background: rgba(10, 22, 40, 0.78);
-  border: 1px solid rgba(64, 128, 255, 0.22);
+  background: var(--mahi-glass-elevated, rgba(10, 22, 40, 0.78));
+  border: 1px solid var(--mahi-glass-border, rgba(64, 128, 255, 0.22));
   border-radius: 12px;
   padding: 0 14px;
   height: 44px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.24), inset 0 1px 0 var(--mahi-glass-highlight, rgba(255, 255, 255, 0.05));
+  backdrop-filter: blur(var(--mahi-glass-blur, 12px));
+  -webkit-backdrop-filter: blur(var(--mahi-glass-blur, 12px));
   transition: all 180ms ease-out;
 }
 
 .mahi-searchbar-wrapper:hover {
-  border-color: rgba(64, 150, 255, 0.38);
-  background: rgba(12, 26, 48, 0.86);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.32), 0 0 12px rgba(47, 127, 255, 0.12);
+  border-color: var(--mahi-accent-border, rgba(64, 150, 255, 0.38));
+  background: var(--mahi-glass-elevated-hover, rgba(12, 26, 48, 0.86));
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.32), 0 0 12px var(--mahi-accent-glow, rgba(47, 127, 255, 0.12));
 }
 
 .mahi-searchbar-wrapper:focus-within {
-  border-color: #2f7fff;
-  background: rgba(12, 28, 52, 0.95);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 20px rgba(47, 127, 255, 0.28);
+  border-color: var(--mahi-accent-primary, #2f7fff);
+  background: var(--mahi-glass-elevated-hover, rgba(12, 28, 52, 0.95));
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 20px var(--mahi-accent-glow, rgba(47, 127, 255, 0.28));
 }
 
 .mahi-search-icon {
@@ -38,7 +38,7 @@
 }
 
 .mahi-searchbar-wrapper:focus-within .mahi-search-icon {
-  color: #00d2ff;
+  color: var(--mahi-accent-primary, #00d2ff);
 }
 
 .mahi-search-input {
@@ -78,8 +78,8 @@
 }
 
 .mahi-searchbar-wrapper:focus-within .mahi-search-shortcut-badge {
-  border-color: rgba(47, 127, 255, 0.3);
-  color: #2f7fff;
+  border-color: var(--mahi-accent-border, rgba(47, 127, 255, 0.3));
+  color: var(--mahi-accent-primary, #2f7fff);
 }
 
 .mahi-search-clear-btn {
